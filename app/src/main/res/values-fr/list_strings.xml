@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="itm_lst_media">Liste de Media</string>
+    <string name="itm_add_media">Ajouter ...</string>
+    <string name="itm_settings">Configuration</string>
+    <string name="itm_lang">Langue</string>
+    <string name="itm_about">A Propos</string>
+    <string name="about_txt">Copyright 2017 Valannos et Malah</string>
+</resources>

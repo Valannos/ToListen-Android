@@ -1,9 +1,8 @@
 package afpa.learning.tolisten;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends ListMenu {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
