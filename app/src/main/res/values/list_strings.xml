@@ -5,4 +5,5 @@
     <string name="itm_lang">Language</string>
     <string name="itm_about">About</string>
     <string name="about_txt">Copyright 2017 Valannos and Malah</string>
+    <string name="filter_genre">Filter by genre</string>
 </resources>

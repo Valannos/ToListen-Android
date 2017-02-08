@@ -6,4 +6,5 @@
     <string name="itm_lang">Langue</string>
     <string name="itm_about">A Propos</string>
     <string name="about_txt">Copyright 2017 Valannos et Malah</string>
+    <string name="filter_genre">Filtrer par genres</string>
 </resources>
