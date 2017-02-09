@@ -1,20 +1,26 @@
 package afpa.learning.tolisten;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import afpa.learning.tolisten.model.ListMediaAdapter;
 import afpa.learning.tolisten.model.Media;
+import afpa.learning.tolisten.model.MediaProvider;
 
 public class ListActivity extends ListMenu {
 
     Spinner spnGenre;
     ListView lstMedia;
+    ListMediaAdapter adpMedia;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +32,19 @@ public class ListActivity extends ListMenu {
 
         ArrayList<Media> medias = new ArrayList<>();
 
-        ListMediaAdapter adptMedia = new ListMediaAdapter(this, medias);
+        MediaProvider data = new MediaProvider();
+        data.execute();
+        try {
+            medias = data.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
-        lstMedia.setAdapter(adptMedia);
+        adpMedia = new ListMediaAdapter(this, medias);
+
+        lstMedia.setAdapter(adpMedia);
 
         List<String> genre = new ArrayList<>();
 
@@ -44,5 +60,17 @@ public class ListActivity extends ListMenu {
 
         spnGenre.setAdapter(adptGenre);
 
+
+        spnGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+        });
     }
 }
