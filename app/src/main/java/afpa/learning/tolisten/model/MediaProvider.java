@@ -28,6 +28,11 @@ public class MediaProvider extends AsyncTask<String, Void, ArrayList<Media>> {
 
 
     @Override
+    protected void onPostExecute(ArrayList<Media> medias) {
+        super.onPostExecute(medias);
+    }
+
+    @Override
     protected ArrayList<Media> doInBackground(String... params) {
 
         ArrayList<Media> medias = null;

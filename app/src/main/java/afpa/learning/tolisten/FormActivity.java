@@ -9,8 +9,10 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -53,25 +55,11 @@ public class FormActivity extends Activity {
         inputAuthor = (EditText) findViewById(R.id.inputAuthor);
         inputURL = (EditText) findViewById(R.id.inputURL);
         inputSender = (EditText) findViewById(R.id.inputSender);
+        HttpURLConnection connection = null;
 
         Media media = new Media(inputTitle.getText().toString(), inputURL.getText().toString(), inputAuthor.getText().toString(), inputGenre.getText().toString(), inputSender.getText().toString());
 
         if (!media.getAuthor().equals("") && !media.getGenre().equals("") && !media.getTitle().equals("") && !media.getUrl().equals("") && !media.getUser().equals("")) {
-
-
-
-       /*     try {
-                data = URLEncoder.encode("title", "UTF-8") + "=" + URLEncoder.encode(media.getTitle(), "UTF-8");
-                data += "&" + URLEncoder.encode("url", "UTF-8") + "=" + URLEncoder.encode(media.getUrl(), "UTF-8");
-                data += "&" + URLEncoder.encode("sender", "UTF-8") + "=" + URLEncoder.encode((media.getUser()), "UTF-8");
-                data += "&" + URLEncoder.encode("genre", "UTF-8") + "=" + URLEncoder.encode(media.getGenre(), "UTF-8");
-                data += "&" + URLEncoder.encode("author", "UTF-8") + "=" + URLEncoder.encode(media.getAuthor(), "UTF-8");
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-*/
-
 
             JSONObject json = new JSONObject();
             try {
@@ -87,14 +75,15 @@ public class FormActivity extends Activity {
 
             Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, json.toString());
 
-            BufferedReader br;
+
             try {
 
 
                 URL url = new URL(APISettings.getURI(APISettings.URI.POST));
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection = (HttpURLConnection) url.openConnection();
                 connection.setReadTimeout(3000);
                 connection.setConnectTimeout(3000);
+                connection.setDoOutput(true);
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
@@ -103,27 +92,29 @@ public class FormActivity extends Activity {
                 otw.flush();
 
 
-                br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+               BufferedInputStream isr = new BufferedInputStream(connection.getInputStream());
                 StringBuilder sb = new StringBuilder();
-                String line;
 
+                BufferedReader br = new BufferedReader(new InputStreamReader(isr));
+
+                String line;
                 while ((line = br.readLine()) != null) {
 
-                    sb.append(line + "\n");
+                    sb.append(line);
 
                 }
-
-
                 br.close();
-                Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "Response : " + sb.toString());
-
-                if (sb.toString() == "200") {
-
-                    Toast.makeText(getBaseContext(), sb.toString(), Toast.LENGTH_LONG).show();
-                    this.finish();
 
 
-                }
+                System.out.println(sb.toString());
+
+
+
+
+
+                Toast.makeText(getBaseContext(), R.string.toastForm, Toast.LENGTH_LONG).show();
+          //      this.finish();
+
 
             } catch (MalformedURLException e) {
 
@@ -131,6 +122,8 @@ public class FormActivity extends Activity {
 
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                connection.disconnect();
             }
 
 

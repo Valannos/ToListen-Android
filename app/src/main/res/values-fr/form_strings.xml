@@ -9,6 +9,7 @@
     <string name="inputLinkHint">saisir l\'URL</string>
     <string name="btnValid">Envoyer</string>
     <string name="btnQuit">Retour</string>
+    <string name="toastForm">Lien ajouté avec succès</string>
 
 
 
