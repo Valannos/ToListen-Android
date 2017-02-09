@@ -40,6 +40,9 @@ public class ListMenu extends AppCompatActivity {
                 Intent lang = new Intent(Settings.ACTION_LOCALE_SETTINGS);
                 startActivity(lang);
                 return true;
+            case R.id.itmExit:
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

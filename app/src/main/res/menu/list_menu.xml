@@ -15,6 +15,8 @@
                 android:id="@+id/itmLang" />
         </menu>
     </item>
+    <item android:title="@string/exit"
+        android:id="@+id/itmExit" />
     <item android:title="@string/itm_about"
         android:id="@+id/itmAbout" />
 </menu>
