@@ -18,6 +18,18 @@ public class Media {
         this.user = user;
     }
 
+    public Media(String user, String url, String author, String genre, String title) {
+        this.user = user;
+        this.url = url;
+        this.author = author;
+        this.genre = genre;
+        this.title = title;
+    }
+
+    public Media(String title) {
+        this.title = title;
+    }
+
     public int getId() {
         return id;
     }

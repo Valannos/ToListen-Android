@@ -43,3 +43,4 @@ captures/
 # Others
 .DS_Store
 .externalNativeBuild
+APISettings.java

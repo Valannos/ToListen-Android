@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="inputTitleHint">Saisir un titre</string>
+    <string name="titleFormular">Ajouter un nouveau lien</string>
+    <string name="intputGenreHint">Saisir un genre</string>
+    <string name="inputAuthorHint">Ajouter un ou plusieurs auteur(s)</string>
+    <string name="inputSenderHint">Qui a envoyé le lien ?</string>
+    <string name="inputLinkHint">saisir l'URL</string>
+    <string name="btnValid">Envoyer</string>
+    <string name="btnQuit">Retour</string>
+
+
+
+</resources>

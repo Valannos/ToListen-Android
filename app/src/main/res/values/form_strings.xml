@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="inputTitleHint">Input a title</string>
+    <string name="titleFormular">Add a new link</string>
+    <string name="intputGenreHint">Input a genre</string>
+    <string name="inputAuthorHint">Add author(s)</string>
+    <string name="inputSenderHint">Who sent that link ?</string>
+    <string name="inputLinkHint">input URL</string>
+    <string name="btnValid">Send</string>
+    <string name="btnQuit">Return</string>
+</resources>

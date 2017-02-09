@@ -1,0 +1,42 @@
+package afpa.learning.tolisten;
+
+/**
+ * Created by Afpa on 08/02/2017.
+ */
+
+public class APISettings {
+
+    public enum URI {
+
+        GET_ALL,
+        POST,
+        DELETE,
+
+    }
+
+    private static final String HOST = "localhost";
+    private static final int PORT = 3000;
+
+    private static final String URI_GET_ALL = "/links/api/tolisten";
+    private static final String URI_POST = "/api/tolisten/add";
+    private static final String URI_DELETE = "/api/tolisten/delete/:id";
+    private static final String HTTP = "http://";
+
+    public static String getURI(URI uri) {
+
+        switch (uri) {
+
+            case GET_ALL:
+                return HTTP + HOST + ":" + PORT + URI_GET_ALL;
+            case POST:
+                return HTTP + HOST + ":" + PORT + URI_POST;
+            case DELETE:
+                return HTTP + HOST + ":" + PORT + URI_DELETE;
+            default:
+                return "";
+
+        }
+
+    }
+
+}
