@@ -1,6 +1,7 @@
 package afpa.learning.tolisten.model;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,8 +44,10 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
 
         // Lookup view for data population
         final TextView title = (TextView) convertView.findViewById(R.id.title);
+        final TextView author = (TextView) convertView.findViewById(R.id.author);
         title.setText(media.getTitle());
-
+        author.setText(media.getAuthor());
+        author.setGravity(Gravity.END);
         // Return the completed view to render on screen
         return convertView;
     }
