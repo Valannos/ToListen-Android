@@ -30,7 +30,6 @@ public class ListMenu extends AppCompatActivity {
                 startActivity(list);
                 return true;
             case R.id.itmAddMedia:
-                finish();
                 Intent add = new Intent(this, FormActivity.class);
                 startActivity(add);
                 return true;
