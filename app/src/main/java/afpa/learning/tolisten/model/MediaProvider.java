@@ -15,6 +15,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import afpa.learning.tolisten.APISettings;
 
@@ -29,14 +31,15 @@ public class MediaProvider extends AsyncTask<String, Void, ArrayList<Media>> {
     protected ArrayList<Media> doInBackground(String... params) {
 
         ArrayList<Media> medias = null;
+
         StringBuilder sb = new StringBuilder();
-        String line = "";
         HttpURLConnection urlConnection;
 
 
         try {
 
             URL url = new URL(APISettings.getURI(APISettings.URI.GET_ALL));
+            System.out.println(url);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(3000);
             urlConnection.setConnectTimeout(3000);
@@ -44,20 +47,30 @@ public class MediaProvider extends AsyncTask<String, Void, ArrayList<Media>> {
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.connect();
 
+
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-
+                System.out.println("Connection established, retrieving data");
                 InputStream inst = new BufferedInputStream(urlConnection.getInputStream());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inst));
+                BufferedReader br = new BufferedReader(new InputStreamReader(inst));
 
 
-                while ((line = reader.readLine()) != null) {
+                String line;
+                while ((line = br.readLine()) != null) {
 
                     sb.append(line);
+
                 }
+                br.close();
+
+            } else {
+
+            System.out.println("Error connecting server");
+
             }
             urlConnection.disconnect();
 
-            JSONArray jsonArray = new JSONArray(line);
+
+            JSONArray jsonArray = new JSONArray(sb.toString());
             medias = new ArrayList<>(jsonArray.length());
 
             for (int i = 0; i < jsonArray.length(); i++) {
