@@ -21,7 +21,6 @@ public class ListActivity extends ListMenu {
     ListView lstMedia;
     ListMediaAdapter adpMedia;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +30,6 @@ public class ListActivity extends ListMenu {
         spnGenre = (Spinner) findViewById(R.id.spnGenre);
 
         ArrayList<Media> medias = new ArrayList<>();
-
         MediaProvider data = new MediaProvider();
         data.execute();
         try {
@@ -41,13 +39,9 @@ public class ListActivity extends ListMenu {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
         adpMedia = new ListMediaAdapter(this, medias);
-
         lstMedia.setAdapter(adpMedia);
-
         List<String> genre = new ArrayList<>();
-
         genre.add(this.getString(R.string.filter_genre));
 
         for (Media m : medias) {
@@ -55,11 +49,8 @@ public class ListActivity extends ListMenu {
                 genre.add(m.getGenre());
             }
         }
-
         ArrayAdapter<String> adptGenre = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, genre);
-
         spnGenre.setAdapter(adptGenre);
-
 
         spnGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
