@@ -96,11 +96,12 @@ public class FormActivity extends Activity {
                 connection.setReadTimeout(3000);
                 connection.setConnectTimeout(3000);
                 connection.setRequestMethod("POST");
-                connection.setRequestProperty("Content-Type", "application/json");
+                connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
                 OutputStreamWriter otw = new OutputStreamWriter(connection.getOutputStream());
                 otw.write(json.toString());
                 otw.flush();
+
 
                 br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 StringBuilder sb = new StringBuilder();
@@ -116,13 +117,13 @@ public class FormActivity extends Activity {
                 br.close();
                 Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "Response : " + sb.toString());
 
-       //         if (sb.toString() == "200") {
+                if (sb.toString() == "200") {
 
                     Toast.makeText(getBaseContext(), sb.toString(), Toast.LENGTH_LONG).show();
                     this.finish();
 
 
-         //       }
+                }
 
             } catch (MalformedURLException e) {
 
@@ -138,5 +139,12 @@ public class FormActivity extends Activity {
 
     }
 
+    public void quitForm(View view) {
+
+        this.finish();
+
+    }
 
 }
+
+

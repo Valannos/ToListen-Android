@@ -1,94 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
-        android:text="@string/titleFormular"
+        android:id="@+id/AppTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:id="@+id/AppTitle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
         android:fontFamily="monospace"
+        android:text="@string/titleFormular"
         android:textSize="18sp" />
 
     <EditText
+        android:id="@+id/inputTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text=""
-        android:ems="10"
-        android:layout_marginTop="31dp"
-        android:id="@+id/inputTitle"
-        android:hint="@string/inputTitleHint"
         android:layout_below="@+id/AppTitle"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:ems="10"
+        android:hint="@string/inputTitleHint"
+        android:inputType="textPersonName"
+        android:text="" />
 
     <EditText
+        android:id="@+id/inputGenre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_below="@+id/inputAuthor"
         android:layout_alignLeft="@+id/inputAuthor"
         android:layout_alignStart="@+id/inputAuthor"
-        android:id="@+id/inputGenre"
-        android:hint="@string/intputGenreHint" />
+        android:layout_below="@+id/inputAuthor"
+        android:ems="10"
+        android:hint="@string/intputGenreHint"
+        android:inputType="textPersonName" />
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text=""
-        android:ems="10"
         android:id="@+id/inputAuthor"
-        android:hint="@string/inputAuthorHint"
-        android:layout_below="@+id/inputTitle"
-        android:layout_alignLeft="@+id/inputTitle"
-        android:layout_alignStart="@+id/inputTitle" />
-
-    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:layout_alignLeft="@+id/inputTitle"
+        android:layout_alignStart="@+id/inputTitle"
+        android:layout_below="@+id/inputTitle"
         android:ems="10"
-        android:layout_below="@+id/inputGenre"
+        android:hint="@string/inputAuthorHint"
+        android:inputType="textPersonName"
+        android:text="" />
+
+    <EditText
+        android:id="@+id/inputURL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/inputGenre"
         android:layout_alignStart="@+id/inputGenre"
-        android:id="@+id/inputURL"
-        android:hint="@string/inputLinkHint" />
+        android:layout_below="@+id/inputGenre"
+        android:ems="10"
+        android:hint="@string/inputLinkHint"
+        android:inputType="textPersonName" />
 
     <Button
-        android:text="@string/btnValid"
+        android:id="@+id/btnValid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="38dp"
-        android:id="@+id/btnValid"
-        android:layout_below="@+id/inputSender"
         android:layout_alignLeft="@+id/inputSender"
         android:layout_alignStart="@+id/inputSender"
+        android:layout_below="@+id/inputSender"
+        android:layout_marginTop="38dp"
         android:elevation="0dp"
-        android:onClick="sendForm"/>
+        android:onClick="sendForm"
+        android:text="@string/btnValid" />
 
     <Button
-        android:text="@string/btnQuit"
+        android:id="@+id/btnQuit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/btnValid"
-        android:layout_alignRight="@+id/inputSender"
         android:layout_alignEnd="@+id/inputSender"
-        android:id="@+id/btnQuit" />
+        android:layout_alignRight="@+id/inputSender"
+        android:layout_alignTop="@+id/btnValid"
+        android:onClick="quitForm"
+        android:text="@string/btnQuit" />
 
     <EditText
+        android:id="@+id/inputSender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/inputSender"
-        android:hint="@string/inputSenderHint"
-        android:layout_below="@+id/inputURL"
         android:layout_alignLeft="@+id/inputURL"
-        android:layout_alignStart="@+id/inputURL" />
+        android:layout_alignStart="@+id/inputURL"
+        android:layout_below="@+id/inputURL"
+        android:ems="10"
+        android:hint="@string/inputSenderHint"
+        android:inputType="textPersonName" />
 </RelativeLayout>
