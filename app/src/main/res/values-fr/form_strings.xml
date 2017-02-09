@@ -6,7 +6,7 @@
     <string name="intputGenreHint">Saisir un genre</string>
     <string name="inputAuthorHint">Ajouter un ou plusieurs auteur(s)</string>
     <string name="inputSenderHint">Qui a envoyé le lien ?</string>
-    <string name="inputLinkHint">saisir l'URL</string>
+    <string name="inputLinkHint">saisir l\'URL</string>
     <string name="btnValid">Envoyer</string>
     <string name="btnQuit">Retour</string>
 
