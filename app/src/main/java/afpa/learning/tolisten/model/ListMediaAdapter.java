@@ -20,16 +20,16 @@ import afpa.learning.tolisten.R;
 
 public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable {
 
-    List<Media> medias;
-    List<Media> mOriginalValues;
+    private List<Media> medias;
+    private Filter filter;
 
     public ListMediaAdapter(Context context, ArrayList<Media> medias) {
         super(context, 0, medias);
-        this.medias = medias;
+        this.medias = new ArrayList<>(medias) ;
+        this.filter = new MediaFilter(this);
     }
 
     @Override
-
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the data item for this position
@@ -47,49 +47,58 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
 
         // Return the completed view to render on screen
         return convertView;
-
     }
 
     @Override
     public Filter getFilter() {
-        Filter filter = new Filter() {
-
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-
-                medias = (List<Media>) results.values; // has the filtered values
-                notifyDataSetChanged();  // notifies the data with new filtered values
-            }
-
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
-                List<Media> filteredArrList = new ArrayList<>();
-
-                if (mOriginalValues == null) {
-                    mOriginalValues = new ArrayList<>(medias); // saves the original data in mOriginalValues
-                }
-                if (constraint == null || constraint.length() == 0) {
-
-                    // set the Original result to return
-                    results.count = mOriginalValues.size();
-                    results.values = mOriginalValues;
-                } else {
-                    constraint = constraint.toString().toLowerCase();
-                    for (int i = 0; i < mOriginalValues.size(); i++) {
-                        Media data = mOriginalValues.get(i);
-                        if (data.getGenre().toLowerCase().equals(constraint.toString())) {
-                            filteredArrList.add(data);
-                        }
-                    }
-                    // set the Filtered result to return
-                    results.count = filteredArrList.size();
-                    results.values = filteredArrList;
-                }
-                return results;
-            }
-        };
+        if (filter == null) {
+            filter = new MediaFilter(this);
+        }
         return filter;
+    }
+
+    public class MediaFilter extends Filter {
+
+        private final ListMediaAdapter adp;
+
+        public MediaFilter(ListMediaAdapter adp) {
+            this.adp = adp;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            clear();
+            addAll((List<Media>) results.values);
+            if (results.count == 0) {
+                adp.notifyDataSetInvalidated();
+            } else {
+                adp.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        protected Filter.FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
+            List<Media> filteredArrList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0 || constraint.equals(getContext().getString(R.string.filter_genre))) {
+                // set the Original result to return
+                results.count = medias.size();
+                results.values = medias;
+            } else {
+                constraint = constraint.toString().toLowerCase();
+                for (int i = medias.size() -1; i >= 0; i--) {
+                    Media data = medias.get(i);
+                    if (data.getGenre().toLowerCase().equals(constraint)) {
+                        filteredArrList.add(data);
+                    }
+                }
+                // set the Filtered result to return
+                results.count = filteredArrList.size();
+                results.values = filteredArrList;
+            }
+            return results;
+        }
     }
 }
