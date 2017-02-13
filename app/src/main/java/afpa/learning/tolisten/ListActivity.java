@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -76,12 +77,23 @@ public class ListActivity extends ListMenu {
         lstMedia.setOnItemClickListener(new ListMediaClicked());
     }
 
+    public Spinner getSpnGenre() {
+        return spnGenre;
+    }
+
+    public ListView getLstMedia() {
+        return lstMedia;
+    }
+
+    public EditText getTxtSearch() {
+        return txtSearch;
+    }
+
     class ComboGenreSelected implements AdapterView.OnItemSelectedListener {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             ListMediaAdapter.MediaFilter mediaFilter = (ListMediaAdapter.MediaFilter) adpMedia.getFilter();
-            mediaFilter.setGenre(adpGenre.getItem(position));
             mediaFilter.filter(txtSearch.getText());
         }
 
@@ -101,7 +113,6 @@ public class ListActivity extends ListMenu {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             ListMediaAdapter.MediaFilter mediaFilter = (ListMediaAdapter.MediaFilter) adpMedia.getFilter();
-            mediaFilter.setGenre((String) spnGenre.getSelectedItem());
             mediaFilter.filter(txtSearch.getText());
         }
 
