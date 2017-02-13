@@ -8,14 +8,16 @@ public class Media {
 
     private int id;
     private String title, url, author, genre, user;
+    private boolean isViewed;
 
-    public Media(int id, String title, String url, String author, String genre, String user) {
+    public Media(int id, String title, String url, String author, String genre, String user, boolean isViewed) {
         this.id = id;
         this.title = title;
         this.url = url;
         this.author = author;
         this.genre = genre;
         this.user = user;
+        this.isViewed = isViewed;
     }
 
     public Media(String user, String url, String author, String genre, String title) {
@@ -24,6 +26,7 @@ public class Media {
         this.author = author;
         this.genre = genre;
         this.title = title;
+        this.isViewed = false;
     }
 
     public Media(String title) {
@@ -76,5 +79,13 @@ public class Media {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public boolean isViewed() {
+        return isViewed;
+    }
+
+    public void setViewed(boolean viewed) {
+        isViewed = viewed;
     }
 }

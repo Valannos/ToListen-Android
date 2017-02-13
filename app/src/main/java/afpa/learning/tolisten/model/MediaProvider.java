@@ -15,8 +15,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import afpa.learning.tolisten.APISettings;
 
@@ -87,8 +85,9 @@ public class MediaProvider extends AsyncTask<String, Void, ArrayList<Media>> {
                 String media_genre = jsonObject.getString("genre");
                 String media_author = jsonObject.getString("author");
                 String media_title = jsonObject.getString("title");
+                boolean media_isViewed = jsonObject.getInt("isViewed") == 1 ? true : false;
 
-                Media media = new Media(media_id, media_title, media_url, media_author, media_genre, media_sender);
+                Media media = new Media(media_id, media_title, media_url, media_author, media_genre, media_sender, media_isViewed);
                 medias.add(media);
 
             }
