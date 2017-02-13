@@ -3,6 +3,7 @@ package afpa.learning.tolisten.model;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -81,6 +82,7 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         title.setText(media.getTitle());
         author.setText(media.getAuthor());
         author.setGravity(Gravity.END);
+
         boolean isSetImage = false;
         if (media.getUrl() != null && URLUtil.isValidUrl(media.getUrl())) {
             Uri uri = Uri.parse(media.getUrl());
@@ -99,6 +101,17 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         if (!isSetImage) {
             img.setImageBitmap(BitmapFactory.decodeResource(this.getContext().getResources(), android.R.drawable.ic_media_play));
         }
+
+        if (media.isViewed()) {
+            title.setTextColor(Color.GRAY);
+            author.setTextColor(Color.GRAY);
+            img.setColorFilter(Color.GRAY);
+        } else {
+            title.setTextColor(Color.BLACK);
+            author.setTextColor(Color.BLACK);
+            img.clearColorFilter();
+        }
+
         // Return the completed view to render on screen
         return convertView;
     }
@@ -142,26 +155,33 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
 
             String genre = (String)((ListActivity)adp.getContext()).getSpnGenre().getSelectedItem();
 
-            if ((constraint == null || constraint.length() == 0) && genre.equals(getContext().getString(R.string.filter_genre))) {
+            boolean withViewed = ((ListActivity)adp.getContext()).getChkWithViewed().isChecked();
+
+            if ((constraint == null || constraint.length() == 0) && genre.equals(getContext().getString(R.string.filter_genre)) && withViewed) {
 
                 // set the Original result to return
                 results.count = medias.size();
                 results.values = medias;
             } else {
+
                 genre = genre.toLowerCase();
                 for (int i = medias.size() - 1; i >= 0; i--) {
-                    Media data = medias.get(i);
-                    boolean isFiltered = genre.equals(getContext().getString(R.string.filter_genre)) || data.getGenre().toLowerCase().equals(genre);
+                    Media media = medias.get(i);
+                    if (media.isViewed() && !withViewed) {
+                        continue;
+                    }
+
+                    boolean isFiltered = genre.equals(getContext().getString(R.string.filter_genre).toLowerCase()) || media.getGenre().toLowerCase().equals(genre);
                     if (isFiltered) {
                         if (constraint != null && constraint.length() != 0) {
                             constraint = constraint.toString().toLowerCase();
-                            if (data.getTitle().toLowerCase().contains(constraint) ||
-                                    data.getAuthor().toLowerCase().contains(constraint) ||
-                                    data.getUrl().toLowerCase().contains(constraint)) {
-                                searchFiltered.add(data);
+                            if (media.getTitle().toLowerCase().contains(constraint) ||
+                                    media.getAuthor().toLowerCase().contains(constraint) ||
+                                    media.getUrl().toLowerCase().contains(constraint)) {
+                                searchFiltered.add(media);
                             }
                         } else {
-                            searchFiltered.add(data);
+                            searchFiltered.add(media);
                         }
                     }
                 }
