@@ -9,7 +9,9 @@
     <string name="inputLinkHint">saisir l\'URL</string>
     <string name="btnValid">Envoyer</string>
     <string name="btnQuit">Retour</string>
-    <string name="toastForm">Lien ajouté avec succès</string>
+    <string name="switchViewState">Marquer comme vu</string>
+    <string name="setToViewed">Marqué comme vu</string>
+    <string name="setToNotViewed">marqué comme NON vu</string>
 
 
 
