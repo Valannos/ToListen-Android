@@ -65,6 +65,7 @@ public class ListActivity extends ListMenu {
             e.printStackTrace();
         }
         adpMedia = new ListMediaAdapter(this, medias);
+        lstMedia.setAdapter(adpMedia);
 
         lstMedia.setOnItemClickListener(new ListMediaClicked());
     }
