@@ -152,11 +152,15 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
                 for (int i = medias.size() - 1; i >= 0; i--) {
                     Media data = medias.get(i);
                     boolean isFiltered = genre.equals(getContext().getString(R.string.filter_genre)) || data.getGenre().toLowerCase().equals(genre);
-                    if (isFiltered && constraint != null && constraint.length() != 0) {
-                        constraint = constraint.toString().toLowerCase();
-                        if (data.getTitle().toLowerCase().contains(constraint) ||
-                                data.getAuthor().toLowerCase().contains(constraint) ||
-                                data.getUrl().toLowerCase().contains(constraint)) {
+                    if (isFiltered) {
+                        if (constraint != null && constraint.length() != 0) {
+                            constraint = constraint.toString().toLowerCase();
+                            if (data.getTitle().toLowerCase().contains(constraint) ||
+                                    data.getAuthor().toLowerCase().contains(constraint) ||
+                                    data.getUrl().toLowerCase().contains(constraint)) {
+                                searchFiltered.add(data);
+                            }
+                        } else {
                             searchFiltered.add(data);
                         }
                     }
