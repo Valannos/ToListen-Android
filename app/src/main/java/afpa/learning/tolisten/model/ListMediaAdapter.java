@@ -1,17 +1,26 @@
 package afpa.learning.tolisten.model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import afpa.learning.tolisten.R;
 
@@ -23,11 +32,30 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
 
     private List<Media> medias;
     private Filter filter;
+    private Map<String, Bitmap> images = new HashMap<>();
 
     public ListMediaAdapter(Context context, ArrayList<Media> medias) {
         super(context, 0, medias);
         this.medias = new ArrayList<>(medias);
         this.filter = new MediaFilter(this);
+        for (Media media : medias) {
+            if (media.getUrl() != null && URLUtil.isValidUrl(media.getUrl())) {
+                Uri uri = Uri.parse(media.getUrl());
+                String host = uri.getHost();
+                if (uri.getPort() != -1) {
+                    host += ":" + uri.getPort();
+                }
+                images.put(host, null);
+                System.out.println("Get ICO from: " + host);
+                String[] url = {uri.getScheme(), host};
+                new ImageProvider(this).execute(url);
+            }
+        }
+    }
+
+    public void addImage(String link, Bitmap result) {
+        images.put(link, result);
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -44,10 +72,19 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         // Lookup view for data population
         final TextView title = (TextView) convertView.findViewById(R.id.title);
         final TextView author = (TextView) convertView.findViewById(R.id.author);
+        final ImageView img = (ImageView) convertView.findViewById(R.id.imgIcon);
         title.setText(media.getTitle());
         author.setText(media.getAuthor());
         author.setGravity(Gravity.END);
-
+        if (media.getUrl() != null && URLUtil.isValidUrl(media.getUrl())) {
+            Uri uri = Uri.parse(media.getUrl());
+            if (images.containsKey(uri.getHost())) {
+                Bitmap image = (Bitmap) images.get(uri.getHost());
+                if (image != null) {
+                    img.setImageBitmap(image);
+                }
+            }
+        }
         // Return the completed view to render on screen
         return convertView;
     }
