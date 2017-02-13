@@ -26,7 +26,7 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
 
     public ListMediaAdapter(Context context, ArrayList<Media> medias) {
         super(context, 0, medias);
-        this.medias = new ArrayList<>(medias) ;
+        this.medias = new ArrayList<>(medias);
         this.filter = new MediaFilter(this);
     }
 
@@ -37,7 +37,6 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         Media media = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
-
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_media, parent, false);
         }
@@ -48,8 +47,13 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         title.setText(media.getTitle());
         author.setText(media.getAuthor());
         author.setGravity(Gravity.END);
+
         // Return the completed view to render on screen
         return convertView;
+    }
+
+    public List<Media> getMedias() {
+        return medias;
     }
 
     @Override
@@ -86,10 +90,12 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
             List<Media> filteredArrList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0 || constraint.equals(getContext().getString(R.string.filter_genre))) {
+
                 // set the Original result to return
                 results.count = medias.size();
                 results.values = medias;
             } else {
+
                 constraint = constraint.toString().toLowerCase();
                 for (int i = medias.size() -1; i >= 0; i--) {
                     Media data = medias.get(i);
@@ -97,6 +103,7 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
                         filteredArrList.add(data);
                     }
                 }
+
                 // set the Filtered result to return
                 results.count = filteredArrList.size();
                 results.values = filteredArrList;
