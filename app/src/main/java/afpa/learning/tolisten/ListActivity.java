@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 import afpa.learning.tolisten.model.ListMediaAdapter;
 import afpa.learning.tolisten.model.Media;
 import afpa.learning.tolisten.model.MediaProvider;
+import afpa.learning.tolisten.model.ListMediaClicked;
 
 public class ListActivity extends ListMenu {
 
@@ -46,17 +47,7 @@ public class ListActivity extends ListMenu {
         adpGenre = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, genre);
         spnGenre.setAdapter(adpGenre);
 
-        spnGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                adpMedia.getFilter().filter(adpGenre.getItem(position));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                adpMedia.getFilter().filter("");
-            }
-        });
+        spnGenre.setOnItemSelectedListener(new ComboGenreSelected());
     }
 
     // Initialize medias
@@ -74,6 +65,20 @@ public class ListActivity extends ListMenu {
             e.printStackTrace();
         }
         adpMedia = new ListMediaAdapter(this, medias);
-        lstMedia.setAdapter(adpMedia);
+
+        lstMedia.setOnItemClickListener(new ListMediaClicked());
+    }
+
+    class ComboGenreSelected implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            adpMedia.getFilter().filter(adpGenre.getItem(position));
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+            adpMedia.getFilter().filter("");
+        }
     }
 }
