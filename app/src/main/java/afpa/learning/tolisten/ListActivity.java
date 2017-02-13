@@ -1,9 +1,12 @@
 package afpa.learning.tolisten;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -20,6 +23,7 @@ public class ListActivity extends ListMenu {
 
     Spinner spnGenre;
     ListView lstMedia;
+    EditText txtSearch;
     ListMediaAdapter adpMedia;
     ArrayAdapter<String> adpGenre;
 
@@ -27,6 +31,8 @@ public class ListActivity extends ListMenu {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        txtSearch = (EditText) findViewById(R.id.txtSearch);
+        txtSearch.addTextChangedListener(new TextSearchChanged());
         initMedias();
         initGenre(adpMedia.getMedias());
     }
@@ -74,12 +80,34 @@ public class ListActivity extends ListMenu {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            adpMedia.getFilter().filter(adpGenre.getItem(position));
+            ListMediaAdapter.MediaFilter mediaFilter = (ListMediaAdapter.MediaFilter) adpMedia.getFilter();
+            mediaFilter.setGenre(adpGenre.getItem(position));
+            mediaFilter.filter(txtSearch.getText());
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
             adpMedia.getFilter().filter("");
+        }
+    }
+
+    class TextSearchChanged implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            ListMediaAdapter.MediaFilter mediaFilter = (ListMediaAdapter.MediaFilter) adpMedia.getFilter();
+            mediaFilter.setGenre((String) spnGenre.getSelectedItem());
+            mediaFilter.filter(txtSearch.getText());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
         }
     }
 }

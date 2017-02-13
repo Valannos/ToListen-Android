@@ -68,8 +68,14 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
 
         private final ListMediaAdapter adp;
 
+        private String genre = getContext().getString(R.string.filter_genre);
+
         public MediaFilter(ListMediaAdapter adp) {
             this.adp = adp;
+        }
+
+        public void setGenre(String genre) {
+            this.genre = genre;
         }
 
         @SuppressWarnings("unchecked")
@@ -87,26 +93,46 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         @Override
         protected Filter.FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
-            List<Media> filteredArrList = new ArrayList<>();
+            List<Media> genreFiltered = new ArrayList<>();
+            List<Media> txtFiltered = new ArrayList<>();
 
-            if (constraint == null || constraint.length() == 0 || constraint.equals(getContext().getString(R.string.filter_genre))) {
+            if ((constraint == null || constraint.length() == 0) && genre.equals(getContext().getString(R.string.filter_genre))) {
 
                 // set the Original result to return
                 results.count = medias.size();
                 results.values = medias;
             } else {
 
-                constraint = constraint.toString().toLowerCase();
-                for (int i = medias.size() -1; i >= 0; i--) {
-                    Media data = medias.get(i);
-                    if (data.getGenre().toLowerCase().equals(constraint)) {
-                        filteredArrList.add(data);
+                if (!genre.equals(getContext().getString(R.string.filter_genre))) {
+                    genre = genre.toString().toLowerCase();
+                    for (int i = medias.size() - 1; i >= 0; i--) {
+                        Media data = medias.get(i);
+                        if (data.getGenre().toLowerCase().equals(genre)) {
+                            genreFiltered.add(data);
+                        }
                     }
+                } else {
+                    genreFiltered = medias;
+                }
+
+                if (constraint != null && constraint.length() != 0) {
+                    constraint = constraint.toString().toLowerCase();
+                    for (int i = genreFiltered.size() - 1; i >= 0; i--) {
+                        Media data = genreFiltered.get(i);
+                        if (data.getTitle().toLowerCase().contains(constraint) ||
+                                data.getAuthor().toLowerCase().contains(constraint) ||
+                                data.getUrl().toLowerCase().contains(constraint)) {
+                            txtFiltered.add(data);
+                        }
+                    }
+                } else {
+                    txtFiltered = genreFiltered;
                 }
 
                 // set the Filtered result to return
-                results.count = filteredArrList.size();
-                results.values = filteredArrList;
+                results.count = txtFiltered.size();
+                results.values = txtFiltered;
+
             }
             return results;
         }
