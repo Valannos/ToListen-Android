@@ -7,4 +7,5 @@
     <string name="about_txt">Copyright 2017 Valannos and Malah</string>
     <string name="filter_genre">Filter by genre</string>
     <string name="exit">Exit</string>
+    <string name="txtSearchHint">Search</string>
 </resources>
