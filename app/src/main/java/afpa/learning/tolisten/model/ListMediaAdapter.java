@@ -2,6 +2,7 @@ package afpa.learning.tolisten.model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,9 +15,6 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,16 +43,22 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
                 if (uri.getPort() != -1) {
                     host += ":" + uri.getPort();
                 }
-                images.put(host, null);
-                System.out.println("Get ICO from: " + host);
-                String[] url = {uri.getScheme(), host};
-                new ImageProvider(this).execute(url);
+                if (!images.containsKey(host)) {
+                    images.put(host, null);
+                    System.out.println("Get ICO from: " + host);
+                    String[] url = {uri.getScheme(), host};
+                    new ImageProvider(this).execute(url);
+                    continue;
+                }
+                System.out.println("ICO from " + host + " is already found!");
+                continue;
             }
+            System.out.println("\"" + media.getTitle() + "\" has no valid URL: " + media.getUrl());
         }
     }
 
-    public void addImage(String link, Bitmap result) {
-        images.put(link, result);
+    public void addImage(String link, Bitmap image) {
+        images.put(link, image);
         this.notifyDataSetChanged();
     }
 
@@ -76,14 +80,23 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         title.setText(media.getTitle());
         author.setText(media.getAuthor());
         author.setGravity(Gravity.END);
+        boolean isSetImage = false;
         if (media.getUrl() != null && URLUtil.isValidUrl(media.getUrl())) {
             Uri uri = Uri.parse(media.getUrl());
-            if (images.containsKey(uri.getHost())) {
-                Bitmap image = (Bitmap) images.get(uri.getHost());
+            String host = uri.getHost();
+            if (uri.getPort() != -1) {
+                host += ":" + uri.getPort();
+            }
+            if (images.containsKey(host)) {
+                Bitmap image = images.get(host);
                 if (image != null) {
                     img.setImageBitmap(image);
+                    isSetImage = true;
                 }
             }
+        }
+        if (!isSetImage) {
+            img.setImageBitmap(BitmapFactory.decodeResource(this.getContext().getResources(), android.R.drawable.ic_media_play));
         }
         // Return the completed view to render on screen
         return convertView;
