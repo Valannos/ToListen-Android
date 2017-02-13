@@ -9,4 +9,5 @@
     <string name="btnValid">Send</string>
     <string name="btnQuit">Return</string>
     <string name="toastForm">Link successfully added</string>
+    
 </resources>

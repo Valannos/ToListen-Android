@@ -9,19 +9,11 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import afpa.learning.tolisten.model.Media;
+import afpa.learning.tolisten.model.MediaFormHandler;
 
 /**
  * Created by Afpa on 08/02/2017.
@@ -55,7 +47,7 @@ public class FormActivity extends Activity {
         inputAuthor = (EditText) findViewById(R.id.inputAuthor);
         inputURL = (EditText) findViewById(R.id.inputURL);
         inputSender = (EditText) findViewById(R.id.inputSender);
-        HttpURLConnection connection = null;
+
 
         Media media = new Media(inputTitle.getText().toString(), inputURL.getText().toString(), inputAuthor.getText().toString(), inputGenre.getText().toString(), inputSender.getText().toString());
 
@@ -74,60 +66,19 @@ public class FormActivity extends Activity {
             }
 
             Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, json.toString());
+            MediaFormHandler mfh = new MediaFormHandler(json);
+            mfh.execute();
 
 
-            try {
+        } else {
 
-
-                URL url = new URL(APISettings.getURI(APISettings.URI.POST));
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setReadTimeout(3000);
-                connection.setConnectTimeout(3000);
-                connection.setDoOutput(true);
-                connection.setRequestMethod("POST");
-                connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-
-                OutputStreamWriter otw = new OutputStreamWriter(connection.getOutputStream());
-                otw.write(json.toString());
-                otw.flush();
-
-
-               BufferedInputStream isr = new BufferedInputStream(connection.getInputStream());
-                StringBuilder sb = new StringBuilder();
-
-                BufferedReader br = new BufferedReader(new InputStreamReader(isr));
-
-                String line;
-                while ((line = br.readLine()) != null) {
-
-                    sb.append(line);
-
-                }
-                br.close();
-
-
-                System.out.println(sb.toString());
-
-
-
-
-
-                Toast.makeText(getBaseContext(), R.string.toastForm, Toast.LENGTH_LONG).show();
-          //      this.finish();
-
-
-            } catch (MalformedURLException e) {
-
-                e.getStackTrace();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                connection.disconnect();
-            }
-
+            Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "Some fields are empty");
 
         }
+
+        Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "Done");
+        Toast.makeText(this, R.string.toastForm, Toast.LENGTH_LONG).show();
+        this.finish();
 
 
     }

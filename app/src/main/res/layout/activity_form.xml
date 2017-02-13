@@ -61,28 +61,6 @@
         android:hint="@string/inputLinkHint"
         android:inputType="textPersonName" />
 
-    <Button
-        android:id="@+id/btnValid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/inputSender"
-        android:layout_alignStart="@+id/inputSender"
-        android:layout_below="@+id/inputSender"
-        android:layout_marginTop="38dp"
-        android:elevation="0dp"
-        android:onClick="sendForm"
-        android:text="@string/btnValid" />
-
-    <Button
-        android:id="@+id/btnQuit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/inputSender"
-        android:layout_alignRight="@+id/inputSender"
-        android:layout_alignTop="@+id/btnValid"
-        android:onClick="quitForm"
-        android:text="@string/btnQuit" />
-
     <EditText
         android:id="@+id/inputSender"
         android:layout_width="wrap_content"
@@ -93,4 +71,27 @@
         android:ems="10"
         android:hint="@string/inputSenderHint"
         android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/btnValid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:onClick="sendForm"
+        android:text="@string/btnValid"
+        android:layout_marginTop="48dp"
+        android:layout_below="@+id/inputSender"
+        android:layout_alignRight="@+id/inputSender"
+        android:layout_alignEnd="@+id/inputSender" />
+
+    <Button
+        android:id="@+id/btnQuit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="quitForm"
+        android:text="@string/btnQuit"
+        android:layout_alignBaseline="@+id/btnValid"
+        android:layout_alignBottom="@+id/btnValid"
+        android:layout_alignLeft="@+id/inputSender"
+        android:layout_alignStart="@+id/inputSender" />
 </RelativeLayout>
