@@ -12,12 +12,15 @@ import android.widget.Toast;
  * Created by Afpa on 08/02/2017.
  */
 
-public class ListMenu extends AppCompatActivity {
+public abstract class ListMenu extends AppCompatActivity {
+
+    abstract void onMenuCreated(Menu menu);
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_menu, menu);
+        this.onMenuCreated(menu);
         return true;
     }
 

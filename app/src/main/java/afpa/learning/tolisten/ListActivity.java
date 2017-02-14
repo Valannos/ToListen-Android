@@ -4,6 +4,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -49,6 +51,12 @@ public class ListActivity extends ListMenu {
 
         initMedias();
         initGenre(adpMedia.getMedias());
+    }
+
+    @Override
+    void onMenuCreated(Menu menu) {
+        MenuItem item = menu.findItem(R.id.itmLstMedia);
+        item.setVisible(false);
     }
 
     // Initialize genre
