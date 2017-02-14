@@ -1,5 +1,6 @@
 package afpa.learning.tolisten;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
@@ -112,6 +113,11 @@ public class ListActivity extends ListMenu {
 
     public CheckBox getChkWithViewed() {
         return chkWithViewed;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        initMedias();
+        adpMedia.notifyDataSetChanged();
     }
 
     private class ComboGenreSelected implements AdapterView.OnItemSelectedListener {
