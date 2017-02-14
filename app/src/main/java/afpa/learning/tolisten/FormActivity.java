@@ -1,7 +1,10 @@
 package afpa.learning.tolisten;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -9,9 +12,11 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import afpa.learning.tolisten.model.ListMediaAdapter;
 import afpa.learning.tolisten.model.Media;
 import afpa.learning.tolisten.model.MediaFormHandler;
 
@@ -19,7 +24,7 @@ import afpa.learning.tolisten.model.MediaFormHandler;
  * Created by Afpa on 08/02/2017.
  */
 
-public class FormActivity extends Activity {
+public class FormActivity extends ListMenu {
 
     private EditText inputTitle;
     private EditText inputGenre;
@@ -32,6 +37,8 @@ public class FormActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
+
+
 
     }
 
@@ -68,17 +75,29 @@ public class FormActivity extends Activity {
             Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, json.toString());
             MediaFormHandler mfh = new MediaFormHandler(json);
             mfh.execute();
+            try {
+                String result = mfh.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "Done");
+            Toast.makeText(this, R.string.toastForm, Toast.LENGTH_LONG).show();
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("response", true);
+            this.setResult(RESULT_OK, returnIntent);
+            this.finish();
 
 
         } else {
 
             Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "Some fields are empty");
+            Toast.makeText(this, R.string.toastEmptyFields, Toast.LENGTH_LONG).show();
 
         }
 
-        Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "Done");
-        Toast.makeText(this, R.string.toastForm, Toast.LENGTH_LONG).show();
-        this.finish();
+
 
 
     }
@@ -89,6 +108,11 @@ public class FormActivity extends Activity {
 
     }
 
+    @Override
+    void onMenuCreated(Menu menu) {
+        MenuItem item = menu.findItem(R.id.itmAddMedia);
+        item.setVisible(false);
+    }
 }
 
 

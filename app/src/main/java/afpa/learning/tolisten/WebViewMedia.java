@@ -3,14 +3,19 @@ package afpa.learning.tolisten;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import afpa.learning.tolisten.model.Media;
+import afpa.learning.tolisten.model.MediaRemover;
 import afpa.learning.tolisten.model.MediaSwitchViewState;
 
 /**
@@ -20,6 +25,9 @@ import afpa.learning.tolisten.model.MediaSwitchViewState;
 public class WebViewMedia extends Activity {
 
     private Switch switchView;
+    private MenuItem menuItem;
+    private Button deleteBtn;
+    private Media media;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +39,7 @@ public class WebViewMedia extends Activity {
 
         switchView = (Switch) findViewById(R.id.switchViewState);
 
-        final Media media = new Media(
+        media = new Media(
 
                 (Integer) currentIntent.getExtras().get("media_id"),
                 (String) currentIntent.getExtras().get("media_title"),
@@ -73,8 +81,15 @@ public class WebViewMedia extends Activity {
                 if (media.isViewed()) {
 
                     media.setViewed(false);
+                    Toast.makeText(buttonView.getContext(), R.string.setToNotViewed, Toast.LENGTH_SHORT).show();
 
 
+
+                } else {
+
+
+                    media.setViewed(true);
+                    Toast.makeText(buttonView.getContext(), R.string.setToViewed, Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -82,6 +97,20 @@ public class WebViewMedia extends Activity {
 
             }
         });
+
+
+    }
+
+    public void deleteMedia (View view) {
+
+        MediaRemover remover = new MediaRemover();
+        remover.execute(media.getId());
+        Toast.makeText(this, R.string.toastConfirmSuppression, Toast.LENGTH_SHORT).show();
+        this.finish();
+
+
+
+
 
 
     }
