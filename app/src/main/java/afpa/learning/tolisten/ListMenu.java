@@ -29,7 +29,7 @@ public abstract class ListMenu extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.itmLstMedia:
                 finish();
-                Intent list = new Intent(this, this.getClass());
+                Intent list = new Intent(this, ListActivity.class);
                 startActivity(list);
                 return true;
             case R.id.itmAddMedia:
