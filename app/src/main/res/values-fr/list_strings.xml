@@ -5,7 +5,7 @@
     <string name="itm_settings">Configuration</string>
     <string name="itm_lang">Langue</string>
     <string name="itm_about">A Propos</string>
-    <string name="about_txt">Copyright 2017 Valannos et Malah</string>
+    <string name="about_txt">Copyright 2017 par Valannos et Malah</string>
     <string name="filter_genre">Filtrer par genres</string>
     <string name="exit">Quitter</string>
     <string name="txtSearchHint">Rechercher</string>
