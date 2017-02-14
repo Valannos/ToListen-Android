@@ -3,6 +3,7 @@ package afpa.learning.tolisten.model;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,10 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import afpa.learning.tolisten.ListActivity;
 import afpa.learning.tolisten.R;
 
 /**
@@ -80,6 +84,7 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         title.setText(media.getTitle());
         author.setText(media.getAuthor());
         author.setGravity(Gravity.END);
+
         boolean isSetImage = false;
         if (media.getUrl() != null && URLUtil.isValidUrl(media.getUrl())) {
             Uri uri = Uri.parse(media.getUrl());
@@ -98,6 +103,17 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         if (!isSetImage) {
             img.setImageBitmap(BitmapFactory.decodeResource(this.getContext().getResources(), android.R.drawable.ic_media_play));
         }
+
+        if (media.isViewed()) {
+            title.setTextColor(Color.GRAY);
+            author.setTextColor(Color.GRAY);
+            img.setColorFilter(Color.GRAY);
+        } else {
+            title.setTextColor(Color.BLACK);
+            author.setTextColor(Color.BLACK);
+            img.clearColorFilter();
+        }
+
         // Return the completed view to render on screen
         return convertView;
     }
@@ -118,21 +134,24 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
 
         private final ListMediaAdapter adp;
 
-        private String genre = getContext().getString(R.string.filter_genre);
-
         public MediaFilter(ListMediaAdapter adp) {
             this.adp = adp;
-        }
-
-        public void setGenre(String genre) {
-            this.genre = genre;
         }
 
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             clear();
-            addAll((List<Media>) results.values);
+
+            List<Media> medias = (List<Media>)results.values;
+            Collections.sort(medias, new Comparator<Media>() {
+                @Override
+                public int compare(Media o1, Media o2) {
+                    return ((Boolean)o1.isViewed()).compareTo(o2.isViewed());
+                }
+            });
+
+            addAll(medias);
             if (results.count == 0) {
                 adp.notifyDataSetInvalidated();
             } else {
@@ -143,45 +162,44 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         @Override
         protected Filter.FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
-            List<Media> genreFiltered = new ArrayList<>();
-            List<Media> txtFiltered = new ArrayList<>();
+            List<Media> searchFiltered = new ArrayList<>();
 
-            if ((constraint == null || constraint.length() == 0) && genre.equals(getContext().getString(R.string.filter_genre))) {
+            String genre = (String)((ListActivity)adp.getContext()).getSpnGenre().getSelectedItem();
+
+            boolean withViewed = ((ListActivity)adp.getContext()).getChkWithViewed().isChecked();
+
+            if ((constraint == null || constraint.length() == 0) && genre.equals(getContext().getString(R.string.filter_genre)) && withViewed) {
 
                 // set the Original result to return
                 results.count = medias.size();
                 results.values = medias;
             } else {
 
-                if (!genre.equals(getContext().getString(R.string.filter_genre))) {
-                    genre = genre.toString().toLowerCase();
-                    for (int i = medias.size() - 1; i >= 0; i--) {
-                        Media data = medias.get(i);
-                        if (data.getGenre().toLowerCase().equals(genre)) {
-                            genreFiltered.add(data);
-                        }
+                genre = genre.toLowerCase();
+                for (int i = medias.size() - 1; i >= 0; i--) {
+                    Media media = medias.get(i);
+                    if (media.isViewed() && !withViewed) {
+                        continue;
                     }
-                } else {
-                    genreFiltered = medias;
-                }
 
-                if (constraint != null && constraint.length() != 0) {
-                    constraint = constraint.toString().toLowerCase();
-                    for (int i = genreFiltered.size() - 1; i >= 0; i--) {
-                        Media data = genreFiltered.get(i);
-                        if (data.getTitle().toLowerCase().contains(constraint) ||
-                                data.getAuthor().toLowerCase().contains(constraint) ||
-                                data.getUrl().toLowerCase().contains(constraint)) {
-                            txtFiltered.add(data);
+                    boolean isFiltered = genre.equals(getContext().getString(R.string.filter_genre).toLowerCase()) || media.getGenre().toLowerCase().equals(genre);
+                    if (isFiltered) {
+                        if (constraint != null && constraint.length() != 0) {
+                            constraint = constraint.toString().toLowerCase();
+                            if (media.getTitle().toLowerCase().contains(constraint) ||
+                                    media.getAuthor().toLowerCase().contains(constraint) ||
+                                    media.getUrl().toLowerCase().contains(constraint)) {
+                                searchFiltered.add(media);
+                            }
+                        } else {
+                            searchFiltered.add(media);
                         }
                     }
-                } else {
-                    txtFiltered = genreFiltered;
                 }
 
                 // set the Filtered result to return
-                results.count = txtFiltered.size();
-                results.values = txtFiltered;
+                results.count = searchFiltered.size();
+                results.values = searchFiltered;
 
             }
             return results;

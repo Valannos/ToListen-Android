@@ -1,12 +1,18 @@
 package afpa.learning.tolisten;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -15,15 +21,17 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import afpa.learning.tolisten.model.ListMediaAdapter;
+import afpa.learning.tolisten.model.ListMediaClicked;
 import afpa.learning.tolisten.model.Media;
 import afpa.learning.tolisten.model.MediaProvider;
-import afpa.learning.tolisten.model.ListMediaClicked;
 
 public class ListActivity extends ListMenu {
 
     Spinner spnGenre;
     ListView lstMedia;
     EditText txtSearch;
+    ImageView imgSearch;
+    CheckBox chkWithViewed;
     ListMediaAdapter adpMedia;
     ArrayAdapter<String> adpGenre;
 
@@ -31,10 +39,24 @@ public class ListActivity extends ListMenu {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
         txtSearch = (EditText) findViewById(R.id.txtSearch);
         txtSearch.addTextChangedListener(new TextSearchChanged());
+
+        imgSearch = (ImageView) findViewById(R.id.imgSearch);
+        imgSearch.setOnClickListener(new ImgClicked());
+
+        chkWithViewed = (CheckBox) findViewById(R.id.chkViewed);
+        chkWithViewed.setOnCheckedChangeListener(new CheckWithViewedChanged());
+
         initMedias();
         initGenre(adpMedia.getMedias());
+    }
+
+    @Override
+    void onMenuCreated(Menu menu) {
+        MenuItem item = menu.findItem(R.id.itmLstMedia);
+        item.setVisible(false);
     }
 
     // Initialize genre
@@ -76,12 +98,27 @@ public class ListActivity extends ListMenu {
         lstMedia.setOnItemClickListener(new ListMediaClicked());
     }
 
-    class ComboGenreSelected implements AdapterView.OnItemSelectedListener {
+    public Spinner getSpnGenre() {
+        return spnGenre;
+    }
+
+    public ListView getLstMedia() {
+        return lstMedia;
+    }
+
+    public EditText getTxtSearch() {
+        return txtSearch;
+    }
+
+    public CheckBox getChkWithViewed() {
+        return chkWithViewed;
+    }
+
+    private class ComboGenreSelected implements AdapterView.OnItemSelectedListener {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             ListMediaAdapter.MediaFilter mediaFilter = (ListMediaAdapter.MediaFilter) adpMedia.getFilter();
-            mediaFilter.setGenre(adpGenre.getItem(position));
             mediaFilter.filter(txtSearch.getText());
         }
 
@@ -91,7 +128,7 @@ public class ListActivity extends ListMenu {
         }
     }
 
-    class TextSearchChanged implements TextWatcher {
+    private class TextSearchChanged implements TextWatcher {
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -101,13 +138,41 @@ public class ListActivity extends ListMenu {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             ListMediaAdapter.MediaFilter mediaFilter = (ListMediaAdapter.MediaFilter) adpMedia.getFilter();
-            mediaFilter.setGenre((String) spnGenre.getSelectedItem());
-            mediaFilter.filter(txtSearch.getText());
+            String txt = txtSearch.getText().toString();
+            mediaFilter.filter(txt);
+
+            if (txt != null && txt.length() > 0) {
+                imgSearch.setImageBitmap(BitmapFactory.decodeResource(getResources(), android.R.drawable.ic_delete));
+            } else {
+                imgSearch.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.search));
+            }
         }
 
         @Override
         public void afterTextChanged(Editable s) {
 
+        }
+    }
+
+    private class CheckWithViewedChanged implements CompoundButton.OnCheckedChangeListener {
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            ListMediaAdapter.MediaFilter mediaFilter = (ListMediaAdapter.MediaFilter) adpMedia.getFilter();
+            mediaFilter.filter(txtSearch.getText());
+        }
+    }
+
+    private class ImgClicked implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            String txt = txtSearch.getText().toString();
+            if (txt != null && txt.length() > 0) {
+                txtSearch.setText("");
+            } else {
+                txtSearch.requestFocus();
+            }
         }
     }
 }
