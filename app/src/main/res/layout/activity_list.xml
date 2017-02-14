@@ -34,9 +34,10 @@
             <ImageView
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/search"
-                android:id="@+id/imageView"
+                android:id="@+id/imgSearch"
                 android:layout_weight="1"
-                android:layout_width="50dp" />
+                android:layout_width="50dp"
+                android:clickable="true" />
         </LinearLayout>
 
         <Spinner

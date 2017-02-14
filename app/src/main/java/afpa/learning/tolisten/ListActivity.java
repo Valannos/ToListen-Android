@@ -1,5 +1,6 @@
 package afpa.learning.tolisten;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -17,15 +19,16 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import afpa.learning.tolisten.model.ListMediaAdapter;
+import afpa.learning.tolisten.model.ListMediaClicked;
 import afpa.learning.tolisten.model.Media;
 import afpa.learning.tolisten.model.MediaProvider;
-import afpa.learning.tolisten.model.ListMediaClicked;
 
 public class ListActivity extends ListMenu {
 
     Spinner spnGenre;
     ListView lstMedia;
     EditText txtSearch;
+    ImageView imgSearch;
     CheckBox chkWithViewed;
     ListMediaAdapter adpMedia;
     ArrayAdapter<String> adpGenre;
@@ -37,6 +40,9 @@ public class ListActivity extends ListMenu {
 
         txtSearch = (EditText) findViewById(R.id.txtSearch);
         txtSearch.addTextChangedListener(new TextSearchChanged());
+
+        imgSearch = (ImageView) findViewById(R.id.imgSearch);
+        imgSearch.setOnClickListener(new ImgClicked());
 
         chkWithViewed = (CheckBox) findViewById(R.id.chkViewed);
         chkWithViewed.setOnCheckedChangeListener(new CheckWithViewedChanged());
@@ -124,7 +130,14 @@ public class ListActivity extends ListMenu {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             ListMediaAdapter.MediaFilter mediaFilter = (ListMediaAdapter.MediaFilter) adpMedia.getFilter();
-            mediaFilter.filter(txtSearch.getText());
+            String txt = txtSearch.getText().toString();
+            mediaFilter.filter(txt);
+
+            if (txt != null && txt.length() > 0) {
+                imgSearch.setImageBitmap(BitmapFactory.decodeResource(getResources(), android.R.drawable.ic_delete));
+            } else {
+                imgSearch.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.search));
+            }
         }
 
         @Override
@@ -139,6 +152,19 @@ public class ListActivity extends ListMenu {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             ListMediaAdapter.MediaFilter mediaFilter = (ListMediaAdapter.MediaFilter) adpMedia.getFilter();
             mediaFilter.filter(txtSearch.getText());
+        }
+    }
+
+    private class ImgClicked implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            String txt = txtSearch.getText().toString();
+            if (txt != null && txt.length() > 0) {
+                txtSearch.setText("");
+            } else {
+                txtSearch.requestFocus();
+            }
         }
     }
 }
