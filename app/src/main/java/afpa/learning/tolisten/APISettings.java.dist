@@ -19,8 +19,8 @@ public class APISettings {
     private static final int PORT = 3000;
 
     private static final String URI_GET_ALL = "/links/api/tolisten";
-    private static final String URI_POST = "/api/tolisten/add";
-    private static final String URI_DELETE = "/api/tolisten/delete/";
+    private static final String URI_POST = "/links/api/tolisten/add";
+    private static final String URI_DELETE = "/links/api/tolisten/delete/";
         private static final String URI_SWITCH_VIEW_STATE = "/links/api/tolisten/updateViewState/";
     private static final String HTTP = "http://";
 
