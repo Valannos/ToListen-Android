@@ -11,6 +11,7 @@ public class APISettings {
         GET_ALL,
         POST,
         DELETE,
+        SWITCH_VIEW_STATE,
 
     }
 
@@ -19,7 +20,8 @@ public class APISettings {
 
     private static final String URI_GET_ALL = "/links/api/tolisten";
     private static final String URI_POST = "/api/tolisten/add";
-    private static final String URI_DELETE = "/api/tolisten/delete/:id";
+    private static final String URI_DELETE = "/api/tolisten/delete/";
+        private static final String URI_SWITCH_VIEW_STATE = "/links/api/tolisten/updateViewState/";
     private static final String HTTP = "http://";
 
     public static String getURI(URI uri) {
@@ -32,6 +34,8 @@ public class APISettings {
                 return HTTP + HOST + ":" + PORT + URI_POST;
             case DELETE:
                 return HTTP + HOST + ":" + PORT + URI_DELETE;
+                case SWITCH_VIEW_STATE:
+                                return HTTP + HOST + ":" + PORT + URI_SWITCH_VIEW_STATE;
             default:
                 return "";
 

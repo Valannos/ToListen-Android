@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import afpa.learning.tolisten.model.Media;
+import afpa.learning.tolisten.model.MediaSwitchViewState;
 
 /**
  * Created by Afpa on 13/02/2017.
@@ -17,7 +19,7 @@ import afpa.learning.tolisten.model.Media;
 
 public class WebViewMedia extends Activity {
 
-private Switch switchView;
+    private Switch switchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,7 @@ private Switch switchView;
 
         switchView = (Switch) findViewById(R.id.switchViewState);
 
-        Media media = new Media(
+        final Media media = new Media(
 
                 (Integer) currentIntent.getExtras().get("media_id"),
                 (String) currentIntent.getExtras().get("media_title"),
@@ -53,9 +55,33 @@ private Switch switchView;
         webViewTitle.setText(media.getAuthor() + " - " + media.getTitle());
 
         System.out.println(media.isViewed());
+        System.out.println(media.getId());
 
 
         switchView.setChecked(media.isViewed());
+
+        switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                MediaSwitchViewState mediaSwitchViewState = new MediaSwitchViewState(media.getId());
+
+                mediaSwitchViewState.execute();
+
+
+
+                if (media.isViewed()) {
+
+                    media.setViewed(false);
+
+
+
+                }
+
+
+
+            }
+        });
 
 
     }
