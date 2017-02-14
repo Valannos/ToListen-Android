@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,7 +142,16 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             clear();
-            addAll((List<Media>) results.values);
+
+            List<Media> medias = (List<Media>)results.values;
+            Collections.sort(medias, new Comparator<Media>() {
+                @Override
+                public int compare(Media o1, Media o2) {
+                    return ((Boolean)o1.isViewed()).compareTo(o2.isViewed());
+                }
+            });
+
+            addAll(medias);
             if (results.count == 0) {
                 adp.notifyDataSetInvalidated();
             } else {
