@@ -122,6 +122,11 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         return medias;
     }
 
+    public void Add(Media m) {
+        this.add(m);
+        this.medias.add(m);
+    }
+
     @Override
     public Filter getFilter() {
         if (filter == null) {
