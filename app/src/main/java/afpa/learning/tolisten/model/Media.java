@@ -1,5 +1,7 @@
 package afpa.learning.tolisten.model;
 
+import android.os.Bundle;
+
 /**
  * Created by Afpa on 08/02/2017.
  */
@@ -20,13 +22,23 @@ public class Media {
         this.isViewed = isViewed;
     }
 
-    public Media(String user, String url, String author, String genre, String title) {
+    public Media(String title, String url, String author, String genre, String user) {
         this.user = user;
         this.url = url;
         this.author = author;
         this.genre = genre;
         this.title = title;
         this.isViewed = false;
+    }
+
+    public Media(Bundle extras) {
+        this.id = extras.getInt("id");
+        this.title = extras.getString("title");
+        this.url = extras.getString("url");
+        this.author = extras.getString("author");
+        this.genre = extras.getString("genre");
+        this.user = extras.getString("user");
+        this.isViewed = extras.getBoolean("isViewed");
     }
 
     public Media(String title) {
