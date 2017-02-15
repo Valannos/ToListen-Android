@@ -12,12 +12,14 @@
     <string name="switchViewState">Marquer comme vu</string>
     <string name="setToViewed">Marqué comme vu</string>
     <string name="setToNotViewed">marqué comme NON vu</string>
-    <string name="editButton">Modifier le media</string>
+    <string name="editButton">Modifier media</string>
     <string name="suppressButton">Supprimer le média</string>
     <string name="toastEmptyFields">Certains champs sont vides</string>
     <string name="toastConfirmSuppression">Média supprimé</string>
     <string name="editTitleForm">Modifier un media</string>
     <string name="editFormBtn">Valider</string>
     <string name="toastEditOK">Media modifié</string>
+    <string name="backWebView">Retour</string>
+
 
 </resources>

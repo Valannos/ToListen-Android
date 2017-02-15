@@ -20,6 +20,8 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import afpa.learning.tolisten.model.ListMediaAdapter;
 import afpa.learning.tolisten.model.ListMediaClicked;
@@ -127,6 +129,7 @@ public class ListActivity extends ListMenu {
             adpGenre.notifyDataSetChanged();
         }
         adpMedia.notifyDataSetChanged();
+        Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "TRIGGERED");
     }
 
     private class ComboGenreSelected implements AdapterView.OnItemSelectedListener {

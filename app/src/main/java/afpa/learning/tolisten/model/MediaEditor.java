@@ -37,8 +37,8 @@ public class MediaEditor extends AsyncTask<JSONObject, Void, String> {
             url = new URL(APISettings.getURI(APISettings.URI.UPDATE));
             httpURLConnection = (HttpURLConnection) url.openConnection();
 
-            httpURLConnection.setReadTimeout(3000);
-            httpURLConnection.setConnectTimeout(3000);
+            httpURLConnection.setReadTimeout(5000);
+            httpURLConnection.setConnectTimeout(5000);
 
             httpURLConnection.setRequestMethod("PUT");
             httpURLConnection.setDoInput(true);

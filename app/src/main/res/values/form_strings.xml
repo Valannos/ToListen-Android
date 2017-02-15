@@ -12,12 +12,13 @@
     <string name="switchViewState">Change view state</string>
     <string name="setToViewed">Switch to viewed</string>
     <string name="setToNotViewed">Switch to NOT viewed</string>
-    <string name="editButton">Edit current media</string>
+    <string name="editButton">Edit media</string>
     <string name="suppressButton">Delete media</string>
     <string name="toastEmptyFields">Some fields are empty</string>
     <string name="toastConfirmSuppression">media deleted</string>
     <string name="editTitleForm">Edit a media</string>
     <string name="editFormBtn">Confirm</string>
     <string name="toastEditOK">Media edited</string>
+    <string name="backWebView">Back</string>
     
 </resources>

@@ -46,5 +46,21 @@ public class APISettings {
         }
 
     }
+     public static String getMethodName(URI uri) {
+
+            switch (uri) {
+
+                case GET_ALL:
+                    return "GET";
+                case POST:
+                    return "POST";
+                case DELETE:
+                    return "DELETE";
+                case UPDATE:
+                    return "PUT";
+                default:
+                    return "";
+
+            }
 
 }

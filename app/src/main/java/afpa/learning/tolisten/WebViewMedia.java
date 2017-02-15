@@ -3,13 +3,10 @@ package afpa.learning.tolisten;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -31,31 +28,24 @@ import afpa.learning.tolisten.model.MediaSwitchViewState;
 public class WebViewMedia extends Activity {
 
     private Switch switchView;
-    private MenuItem menuItem;
-    private Button deleteBtn;
+
     private Media media;
+    private TextView webViewTitle;
+
+    String method;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 
         super.onCreate(savedInstanceState);
-        Intent currentIntent = getIntent();
+
         setContentView(R.layout.activity_webviewmedia);
 
         switchView = (Switch) findViewById(R.id.switchViewState);
 
-        media = new Media(
-
-                (Integer) currentIntent.getExtras().get("media_id"),
-                (String) currentIntent.getExtras().get("media_title"),
-                (String) currentIntent.getExtras().get("media_url"),
-                (String) currentIntent.getExtras().get("media_author"),
-                (String) currentIntent.getExtras().get("media_genre"),
-                (String) currentIntent.getExtras().get("media_user"),
-                (Boolean) currentIntent.getExtras().get("media_isViewed")
-
-        );
+        media = new Media(getIntent().getExtras());
 
         WebView browser = (WebView) findViewById(R.id.webViewMedia);
         WebSettings webSettings = browser.getSettings();
@@ -64,7 +54,7 @@ public class WebViewMedia extends Activity {
         // browser.loadUrl("http://www.html5rocks.com/");
 
         browser.loadUrl(media.getUrl());
-        TextView webViewTitle = (TextView) findViewById(R.id.webViewTitle);
+        webViewTitle = (TextView) findViewById(R.id.webViewTitle);
 
         webViewTitle.setText(media.getAuthor() + " - " + media.getTitle());
 
@@ -104,6 +94,25 @@ public class WebViewMedia extends Activity {
 
     }
 
+    public void exitWebView(View view) {
+
+        Intent intent = new Intent();
+
+        intent.putExtra("edition", true);
+        intent.putExtra("id", media.getId());
+        intent.putExtra("url", media.getUrl());
+        intent.putExtra("sender", media.getUser());
+        intent.putExtra("genre", media.getGenre());
+        intent.putExtra("author", media.getAuthor());
+        intent.putExtra("title", media.getTitle());
+        intent.putExtra("isViewed", media.isViewed());
+        intent.putExtra("method", method);
+
+        setResult(RESULT_OK, intent);
+        this.finish();
+
+    }
+
     public void deleteMedia(View view) {
 
         Intent intentMedia = null;
@@ -121,6 +130,8 @@ public class WebViewMedia extends Activity {
             intentMedia.putExtra("author", jsonObject.getString("author"));
             intentMedia.putExtra("title", jsonObject.getString("title"));
 
+            method = APISettings.getMethodName(APISettings.URI.DELETE);
+            intentMedia.putExtra("method", method);
             Integer viewedInt = jsonObject.getInt("isViewed");
 
             if (viewedInt == 0) {
@@ -142,6 +153,7 @@ public class WebViewMedia extends Activity {
 
         Toast.makeText(this, R.string.toastConfirmSuppression, Toast.LENGTH_SHORT).show();
         this.setResult(RESULT_OK, intentMedia);
+
         this.finish();
 
 
@@ -161,8 +173,8 @@ public class WebViewMedia extends Activity {
         intent.putExtra("title", media.getTitle());
         intent.putExtra("isViewed", media.isViewed());
 
-        startActivityForResult(intent, RESULT_OK);
-
+        startActivityForResult(intent, 0);
+        //this.finish();
 
 
     }
@@ -171,21 +183,34 @@ public class WebViewMedia extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == resultCode) {
-
-            if (resultCode == RESULT_OK) {
+        if (requestCode == 0) {
 
 
-                Media media = new Media(data.getExtras());
-                Toast.makeText(this, media.getTitle(), Toast.LENGTH_LONG);
+            if (resultCode == Activity.RESULT_OK) {
+
+
+                Intent intent = getIntent();
+
+                media.setId(intent.getExtras().getInt("id"));
+                media.setTitle(intent.getExtras().getString("title"));
+                media.setUrl(intent.getExtras().getString("url"));
+                media.setAuthor(intent.getExtras().getString("author"));
+                media.setGenre(intent.getExtras().getString("genre"));
+                media.setUser(intent.getExtras().getString("sender"));
+                media.setViewed(intent.getExtras().getBoolean("isViewed"));
+
+                webViewTitle = (TextView) findViewById(R.id.webViewTitle);
+
+                webViewTitle.setText(media.getAuthor() + " - " + media.getTitle());
+                method = APISettings.getMethodName(APISettings.URI.UPDATE);
+                System.out.println("RECIEVED TITLE = " + media.getTitle());
 
             }
-
         }
 
 
     }
-    }
+}
 
 
 

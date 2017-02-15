@@ -194,40 +194,40 @@ public class FormActivity extends ListMenu {
                 e.printStackTrace();
             }
 
-            Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, json.toString());
+            Logger.getLogger(FormActivity.class.getName()).log(Level.SEVERE, json.toString());
             MediaEditor editor = new MediaEditor();
             editor.execute(json);
             try {
                 result = editor.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
             Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "Update Done");
             Toast.makeText(this, R.string.toastEditOK, Toast.LENGTH_LONG).show();
 
-            JSONObject jsonObject = null;
+            JSONObject jsonObject;
             try {
                 jsonObject = new JSONObject(result);
+                returnIntent = new Intent();
+                returnIntent.putExtra("id", jsonObject.getInt("id"));
+                returnIntent.putExtra("url", jsonObject.getString("url"));
+                returnIntent.putExtra("sender", jsonObject.getString("sender"));
+                returnIntent.putExtra("genre", jsonObject.getString("genre"));
+                returnIntent.putExtra("author", jsonObject.getString("author"));
+                returnIntent.putExtra("title", jsonObject.getString("title"));
+
+                Integer viewedInt = jsonObject.getInt("isViewed");
+
+                returnIntent.putExtra("isViewed", viewedInt != 0 ? true : false);
+                Logger.getLogger(FormActivity.class.getName()).log(Level.SEVERE, json.toString());
+
+
+                this.setResult(RESULT_OK, returnIntent);
+                this.finish();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            returnIntent = new Intent();
-            returnIntent.putExtra("id", jsonObject.getInt("id"));
-            returnIntent.putExtra("url", jsonObject.getString("url"));
-            returnIntent.putExtra("sender", jsonObject.getString("sender"));
-            returnIntent.putExtra("genre", jsonObject.getString("genre"));
-            returnIntent.putExtra("author", jsonObject.getString("author"));
-            returnIntent.putExtra("title", jsonObject.getString("title"));
 
-            Integer viewedInt = jsonObject.getInt("isViewed");
-
-            returnIntent.putExtra("isViewed", viewedInt != 0 ? true : false);
-
-
-            this.setResult(RESULT_OK, returnIntent);
-            this.finish();
 
 
         } else {

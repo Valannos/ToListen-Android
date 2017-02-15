@@ -7,22 +7,44 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/webViewTitle" />
-
-    <WebView
-        android:layout_width="match_parent"
-        android:layout_height="305dp"
-        android:id="@+id/webViewMedia">
-
-    </WebView>
+        android:id="@+id/webViewTitle"
+        android:layout_x="-102dp"
+        android:layout_y="2dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Switch
         android:text="@string/switchViewState"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/switchViewState"
-        android:layout_marginTop="40dp"
-        android:layout_below="@+id/webViewMedia"
+        android:layout_x="34dp"
+        android:layout_y="289dp"
+        android:layout_above="@+id/editBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="11dp" />
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="305dp"
+        android:id="@+id/webViewMedia"
+        android:layout_marginTop="28dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+    </WebView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editBtn"
+        android:text="@string/editButton"
+        android:onClick="editMedia"
+        android:layout_alignBaseline="@+id/exitWebView"
+        android:layout_alignBottom="@+id/exitWebView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -31,24 +53,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/supprBtn"
-        android:layout_marginLeft="39dp"
-        android:layout_marginStart="39dp"
-        android:layout_alignBaseline="@+id/editBtn"
-        android:layout_alignBottom="@+id/editBtn"
-        android:layout_toRightOf="@+id/editBtn"
-        android:layout_toEndOf="@+id/editBtn"
-        android:onClick="deleteMedia"/>
+        android:onClick="deleteMedia"
+        android:layout_marginRight="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_below="@+id/switchViewState"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
+        android:text="@string/backWebView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:id="@+id/editBtn"
-        android:layout_marginTop="26dp"
-        android:text="@string/editButton"
-        android:layout_below="@+id/switchViewState"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="editMedia"/>
+        android:id="@+id/exitWebView"
+        android:layout_marginTop="56dp"
+        android:layout_marginRight="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_below="@+id/webViewMedia"
+        android:layout_toLeftOf="@+id/supprBtn"
+        android:layout_toStartOf="@+id/supprBtn"
+        android:onClick="exitWebView"/>
+
 </RelativeLayout>
