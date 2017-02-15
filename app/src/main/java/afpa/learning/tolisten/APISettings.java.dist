@@ -8,10 +8,11 @@ public class APISettings {
 
     public enum URI {
 
-        GET_ALL,
-        POST,
-        DELETE,
-        SWITCH_VIEW_STATE,
+          GET_ALL,
+           POST,
+           DELETE,
+           SWITCH_VIEW_STATE,
+           UPDATE,
 
     }
 
@@ -19,25 +20,28 @@ public class APISettings {
     private static final int PORT = 3000;
 
     private static final String URI_GET_ALL = "/links/api/tolisten";
-    private static final String URI_POST = "/links/api/tolisten/add";
-    private static final String URI_DELETE = "/links/api/tolisten/delete/";
-        private static final String URI_SWITCH_VIEW_STATE = "/links/api/tolisten/updateViewState/";
-    private static final String HTTP = "http://";
+       private static final String URI_POST = "/links/api/tolisten/add";
+       private static final String URI_DELETE = "/links/api/tolisten/delete/";
+       private static final String URI_SWITCH_VIEW_STATE = "/links/api/tolisten/updateViewState/";
+       private static final String URI_UPDATE = "/links/api/tolisten/edit";
+       private static final String HTTP = "http://";
 
     public static String getURI(URI uri) {
 
         switch (uri) {
 
             case GET_ALL:
-                return HTTP + HOST + ":" + PORT + URI_GET_ALL;
-            case POST:
-                return HTTP + HOST + ":" + PORT + URI_POST;
-            case DELETE:
-                return HTTP + HOST + ":" + PORT + URI_DELETE;
-                case SWITCH_VIEW_STATE:
-                                return HTTP + HOST + ":" + PORT + URI_SWITCH_VIEW_STATE;
-            default:
-                return "";
+                           return HTTP + HOST + ":" + PORT + URI_GET_ALL;
+                       case POST:
+                           return HTTP + HOST + ":" + PORT + URI_POST;
+                       case DELETE:
+                           return HTTP + HOST + ":" + PORT + URI_DELETE;
+                       case SWITCH_VIEW_STATE:
+                           return HTTP + HOST + ":" + PORT + URI_SWITCH_VIEW_STATE;
+                       case UPDATE:
+                           return HTTP + HOST + ":" + PORT + URI_UPDATE;
+                       default:
+                           return "";
 
         }
 

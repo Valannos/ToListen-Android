@@ -66,7 +66,7 @@ public class MediaFormHandler extends AsyncTask<JSONObject, Void, String> {
             while ((line = br.readLine()) != null) {
 
                 response.append(line);
-                response.append('\r');
+
             }
             br.close();
 

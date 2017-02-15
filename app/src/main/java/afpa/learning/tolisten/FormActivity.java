@@ -1,6 +1,5 @@
 package afpa.learning.tolisten;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,7 +15,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import afpa.learning.tolisten.model.ListMediaAdapter;
 import afpa.learning.tolisten.model.Media;
 import afpa.learning.tolisten.model.MediaFormHandler;
 
@@ -39,7 +37,6 @@ public class FormActivity extends ListMenu {
         setContentView(R.layout.activity_form);
 
 
-
     }
 
     /**
@@ -47,13 +44,15 @@ public class FormActivity extends ListMenu {
      *
      * @param view
      */
-    public void sendForm(View view) {
+    public void sendForm(View view) throws JSONException {
 
         inputTitle = (EditText) findViewById(R.id.inputTitle);
         inputGenre = (EditText) findViewById(R.id.inputGenre);
         inputAuthor = (EditText) findViewById(R.id.inputAuthor);
         inputURL = (EditText) findViewById(R.id.inputURL);
         inputSender = (EditText) findViewById(R.id.inputSender);
+        String result = "";
+        Intent returnIntent;
 
 
         Media media = new Media(inputTitle.getText().toString(), inputURL.getText().toString(), inputAuthor.getText().toString(), inputGenre.getText().toString(), inputSender.getText().toString());
@@ -76,16 +75,38 @@ public class FormActivity extends ListMenu {
             MediaFormHandler mfh = new MediaFormHandler(json);
             mfh.execute();
             try {
-                String result = mfh.get();
+                result = mfh.get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "Done");
+            //   Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "Done");
             Toast.makeText(this, R.string.toastForm, Toast.LENGTH_LONG).show();
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("response", true);
+
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            returnIntent = new Intent();
+            returnIntent.putExtra("id", jsonObject.getInt("id"));
+            returnIntent.putExtra("url", jsonObject.getString("url"));
+            returnIntent.putExtra("sender", jsonObject.getString("sender"));
+            returnIntent.putExtra("genre", jsonObject.getString("genre"));
+            returnIntent.putExtra("author", jsonObject.getString("author"));
+            returnIntent.putExtra("title", jsonObject.getString("title"));
+
+            Integer viewedInt = jsonObject.getInt("isViewed");
+
+            if (viewedInt == 0) {
+                returnIntent.putExtra("isViewed", Boolean.FALSE);
+            } else {
+                returnIntent.putExtra("isViewed", Boolean.TRUE);
+
+            }
+
             this.setResult(RESULT_OK, returnIntent);
             this.finish();
 
@@ -96,8 +117,6 @@ public class FormActivity extends ListMenu {
             Toast.makeText(this, R.string.toastEmptyFields, Toast.LENGTH_LONG).show();
 
         }
-
-
 
 
     }

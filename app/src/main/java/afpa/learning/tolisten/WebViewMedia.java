@@ -14,6 +14,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
+
 import afpa.learning.tolisten.model.Media;
 import afpa.learning.tolisten.model.MediaRemover;
 import afpa.learning.tolisten.model.MediaSwitchViewState;
@@ -77,12 +82,10 @@ public class WebViewMedia extends Activity {
                 mediaSwitchViewState.execute();
 
 
-
                 if (media.isViewed()) {
 
                     media.setViewed(false);
                     Toast.makeText(buttonView.getContext(), R.string.setToNotViewed, Toast.LENGTH_SHORT).show();
-
 
 
                 } else {
@@ -94,19 +97,57 @@ public class WebViewMedia extends Activity {
                 }
 
 
-
             }
         });
 
 
     }
 
-    public void deleteMedia (View view) {
+    public void deleteMedia(View view) {
 
+        Intent intentMedia = null;
         MediaRemover remover = new MediaRemover();
         remover.execute(media.getId());
+        try {
+            String response = remover.get();
+            System.out.println("Deleted : " + response);
+            JSONObject jsonObject = new JSONObject(response);
+            intentMedia = new Intent();
+            intentMedia.putExtra("id", jsonObject.getInt("id"));
+            intentMedia.putExtra("url", jsonObject.getString("url"));
+            intentMedia.putExtra("sender", jsonObject.getString("sender"));
+            intentMedia.putExtra("genre", jsonObject.getString("genre"));
+            intentMedia.putExtra("author", jsonObject.getString("author"));
+            intentMedia.putExtra("title", jsonObject.getString("title"));
+
+            Integer viewedInt = jsonObject.getInt("isViewed");
+
+            if (viewedInt == 0) {
+                intentMedia.putExtra("isViewed", Boolean.FALSE);
+            } else {
+                intentMedia.putExtra("isViewed", Boolean.TRUE);
+
+            }
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         Toast.makeText(this, R.string.toastConfirmSuppression, Toast.LENGTH_SHORT).show();
+        this.setResult(RESULT_OK, intentMedia);
         this.finish();
+
+
+    }
+
+    public void editMedia(View view) {
+
 
 
 
