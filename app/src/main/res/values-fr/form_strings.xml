@@ -16,7 +16,8 @@
     <string name="suppressButton">Supprimer le média</string>
     <string name="toastEmptyFields">Certains champs sont vides</string>
     <string name="toastConfirmSuppression">Média supprimé</string>
-
-
+    <string name="editTitleForm">Modifier un media</string>
+    <string name="editFormBtn">Valider</string>
+    <string name="toastEditOK">Media modifié</string>
 
 </resources>

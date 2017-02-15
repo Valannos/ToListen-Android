@@ -33,7 +33,7 @@ public class MediaFormHandler extends AsyncTask<JSONObject, Void, String> {
     @Override
     protected String doInBackground(JSONObject... params) {
         HttpURLConnection connection = null;
-        StringBuffer response = null;
+        StringBuilder response = null;
 
         try {
 
@@ -62,7 +62,7 @@ public class MediaFormHandler extends AsyncTask<JSONObject, Void, String> {
 
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
-            response = new StringBuffer();
+            response = new StringBuilder();
             while ((line = br.readLine()) != null) {
 
                 response.append(line);

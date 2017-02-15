@@ -34,6 +34,7 @@ public abstract class ListMenu extends AppCompatActivity {
                 return true;
             case R.id.itmAddMedia:
                 Intent add = new Intent(this, FormActivity.class);
+                add.putExtra("edition", Boolean.FALSE);
                 startActivityForResult(add, 0);
                 return true;
             case R.id.itmAbout:

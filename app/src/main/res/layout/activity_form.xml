@@ -94,4 +94,16 @@
         android:layout_alignBottom="@+id/btnValid"
         android:layout_alignLeft="@+id/inputSender"
         android:layout_alignStart="@+id/inputSender" />
+
+    <Button
+        android:text="@string/editFormBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editButton"
+        android:layout_alignBaseline="@+id/btnValid"
+        android:layout_alignBottom="@+id/btnValid"
+        android:layout_alignLeft="@+id/btnValid"
+        android:layout_alignStart="@+id/btnValid"
+        android:visibility="invisible"
+        android:onClick="sendEditForm"/>
 </RelativeLayout>

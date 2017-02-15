@@ -56,7 +56,7 @@ public class MediaSwitchViewState extends AsyncTask<Integer, Void, Boolean> {
             dos.flush();
             dos.close();
 
-            urlConnection.getInputStream();
+           // urlConnection.getInputStream();
 
 
         } catch (MalformedURLException e) {

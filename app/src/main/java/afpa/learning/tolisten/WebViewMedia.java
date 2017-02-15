@@ -3,6 +3,7 @@ package afpa.learning.tolisten;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -149,10 +150,43 @@ public class WebViewMedia extends Activity {
     public void editMedia(View view) {
 
 
+        Intent intent = new Intent(this, FormActivity.class);
 
+        intent.putExtra("edition", true);
+        intent.putExtra("id", media.getId());
+        intent.putExtra("url", media.getUrl());
+        intent.putExtra("sender", media.getUser());
+        intent.putExtra("genre", media.getGenre());
+        intent.putExtra("author", media.getAuthor());
+        intent.putExtra("title", media.getTitle());
+        intent.putExtra("isViewed", media.isViewed());
 
+        startActivityForResult(intent, RESULT_OK);
 
 
 
     }
-}
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == resultCode) {
+
+            if (resultCode == RESULT_OK) {
+
+
+                Media media = new Media(data.getExtras());
+                Toast.makeText(this, media.getTitle(), Toast.LENGTH_LONG);
+
+            }
+
+        }
+
+
+    }
+    }
+
+
+
+

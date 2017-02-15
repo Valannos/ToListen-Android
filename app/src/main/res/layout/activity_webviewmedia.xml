@@ -49,5 +49,6 @@
         android:text="@string/editButton"
         android:layout_below="@+id/switchViewState"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="editMedia"/>
 </RelativeLayout>
