@@ -25,6 +25,7 @@ import afpa.learning.tolisten.model.ListMediaAdapter;
 import afpa.learning.tolisten.model.ListMediaClicked;
 import afpa.learning.tolisten.model.Media;
 import afpa.learning.tolisten.model.MediaProvider;
+import afpa.learning.tolisten.model.GenreAdapter;
 
 public class ListActivity extends ListMenu {
 
@@ -34,7 +35,7 @@ public class ListActivity extends ListMenu {
     ImageView imgSearch;
     CheckBox chkWithViewed;
     ListMediaAdapter adpMedia;
-    ArrayAdapter<String> adpGenre;
+    GenreAdapter adpGenre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,16 +65,16 @@ public class ListActivity extends ListMenu {
     private void initGenre(List<Media> medias) {
         spnGenre = (Spinner) findViewById(R.id.spnGenre);
 
-        List<String> genre = new ArrayList<>();
-        genre.add(this.getString(R.string.filter_genre));
+        List<String> genres = new ArrayList<>();
+        genres.add(this.getString(R.string.filter_genre));
 
         for (Media m : medias) {
-            if (!genre.contains(m.getGenre())) {
-                genre.add(m.getGenre());
+            if (!genres.contains(m.getGenre())) {
+                genres.add(m.getGenre());
             }
         }
 
-        adpGenre = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, genre);
+        adpGenre = new GenreAdapter(this, android.R.layout.simple_spinner_item, genres);
         spnGenre.setAdapter(adpGenre);
 
         spnGenre.setOnItemSelectedListener(new ComboGenreSelected());
@@ -116,7 +117,15 @@ public class ListActivity extends ListMenu {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        initMedias();
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        Media m = new Media(data.getExtras());
+        adpMedia.Add(m);
+        if (!adpGenre.contains(m.getGenre())) {
+            adpGenre.add(m.getGenre());
+            adpGenre.notifyDataSetChanged();
+        }
         adpMedia.notifyDataSetChanged();
     }
 
