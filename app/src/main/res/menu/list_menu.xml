@@ -5,6 +5,8 @@
     <group android:id="@+id/grpMenu">
         <item android:title="@string/itm_lst_media"
             android:id="@+id/itmLstMedia" />
+        <item android:title="@string/itm_update"
+            android:id="@+id/itmUpdate" />
         <item android:title="@string/itm_add_media"
             android:id="@+id/itmAddMedia" />
     </group>

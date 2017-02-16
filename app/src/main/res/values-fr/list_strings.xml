@@ -10,4 +10,5 @@
     <string name="exit">Quitter</string>
     <string name="txtSearchHint">Rechercher</string>
     <string name="chkViewed">Afficher les médias déjà vus</string>
+    <string name="itm_update">Mettre à jour les données</string>
 </resources>

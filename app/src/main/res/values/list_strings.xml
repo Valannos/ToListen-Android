@@ -9,4 +9,5 @@
     <string name="exit">Exit</string>
     <string name="txtSearchHint">Search</string>
     <string name="chkViewed">Display already viewed medias</string>
+    <string name="itm_update">Update datas</string>
 </resources>

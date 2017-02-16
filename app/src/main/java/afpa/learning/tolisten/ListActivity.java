@@ -63,6 +63,15 @@ public class ListActivity extends ListMenu {
         item.setVisible(false);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.itmUpdate) {
+            initMedias();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     // Initialize genre
     private void initGenre(List<Media> medias) {
         spnGenre = (Spinner) findViewById(R.id.spnGenre);
