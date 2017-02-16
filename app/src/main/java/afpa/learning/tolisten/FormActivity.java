@@ -130,21 +130,8 @@ public class FormActivity extends ListMenu {
                 e.printStackTrace();
             }
             returnIntent = new Intent();
-            returnIntent.putExtra("id", jsonObject.getInt("id"));
-            returnIntent.putExtra("url", jsonObject.getString("url"));
-            returnIntent.putExtra("sender", jsonObject.getString("sender"));
-            returnIntent.putExtra("genre", jsonObject.getString("genre"));
-            returnIntent.putExtra("author", jsonObject.getString("author"));
-            returnIntent.putExtra("title", jsonObject.getString("title"));
+            Utils.fillIntentFormJSON(returnIntent, jsonObject);
 
-            Integer viewedInt = jsonObject.getInt("isViewed");
-
-            if (viewedInt == 0) {
-                returnIntent.putExtra("isViewed", Boolean.FALSE);
-            } else {
-                returnIntent.putExtra("isViewed", Boolean.TRUE);
-
-            }
 
             returnIntent.putExtra("method", APISettings.getMethodName(APISettings.URI.POST));
 
@@ -211,15 +198,8 @@ public class FormActivity extends ListMenu {
             try {
                 jsonObject = new JSONObject(result);
                 returnIntent = new Intent();
-                returnIntent.putExtra("id", jsonObject.getInt("id"));
-                returnIntent.putExtra("url", jsonObject.getString("url"));
-                returnIntent.putExtra("sender", jsonObject.getString("sender"));
-                returnIntent.putExtra("genre", jsonObject.getString("genre"));
-                returnIntent.putExtra("author", jsonObject.getString("author"));
-                returnIntent.putExtra("title", jsonObject.getString("title"));
-                Integer viewedInt = jsonObject.getInt("isViewed");
+                Utils.fillIntentFormJSON(returnIntent, jsonObject);
 
-                returnIntent.putExtra("isViewed", viewedInt != 0 ? true : false);
                 Logger.getLogger(FormActivity.class.getName()).log(Level.SEVERE, json.toString());
 
                 this.setResult(RESULT_OK, returnIntent);
@@ -227,7 +207,6 @@ public class FormActivity extends ListMenu {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
 
 
         } else {

@@ -3,6 +3,10 @@ package afpa.learning.tolisten;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -25,7 +29,7 @@ import afpa.learning.tolisten.model.MediaSwitchViewState;
  * Created by Afpa on 13/02/2017.
  */
 
-public class WebViewMedia extends Activity {
+public class WebViewMedia extends AppCompatActivity {
 
     private Switch switchView;
 
@@ -34,6 +38,36 @@ public class WebViewMedia extends Activity {
 
     String method = "";
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.webview_menu, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.itmEdit:
+                this.editMedia(null);
+                return true;
+
+            case R.id.itmDelete:
+                this.deleteMedia(null);
+                return true;
+            case R.id.itmBack:
+                this.exitWebView(null);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +80,7 @@ public class WebViewMedia extends Activity {
         switchView = (Switch) findViewById(R.id.switchViewState);
 
         media = new Media(getIntent().getExtras());
+        System.out.println(media.toString());
 
         WebView browser = (WebView) findViewById(R.id.webViewMedia);
         WebSettings webSettings = browser.getSettings();
@@ -69,62 +104,41 @@ public class WebViewMedia extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 MediaSwitchViewState mediaSwitchViewState = new MediaSwitchViewState(media.getId());
-
                 mediaSwitchViewState.execute();
 
-
                 if (media.isViewed()) {
-
                     media.setViewed(false);
                     Toast.makeText(buttonView.getContext(), R.string.setToNotViewed, Toast.LENGTH_SHORT).show();
-
-
                 } else {
-
-
                     media.setViewed(true);
                     Toast.makeText(buttonView.getContext(), R.string.setToViewed, Toast.LENGTH_SHORT).show();
-
                 }
-
-
             }
         });
-
-
     }
 
     /**
      * Return media object through intent to ListActivity
      * If no DELETE nor PUT request has been sent, "method" value is set to APISettings.URI.UPDATE
+     *
      * @param view
      */
     public void exitWebView(View view) {
 
         Intent intent = new Intent();
-
         intent.putExtra("edition", true);
-        intent.putExtra("id", media.getId());
-        intent.putExtra("url", media.getUrl());
-        intent.putExtra("sender", media.getSender());
-        intent.putExtra("genre", media.getGenre());
-        intent.putExtra("author", media.getAuthor());
-        intent.putExtra("title", media.getTitle());
-        intent.putExtra("isViewed", media.isViewed());
+        Utils.fillIntentFromMedia(intent, media);
         if (this.method.equals("")) this.method = APISettings.getMethodName(APISettings.URI.UPDATE);
         intent.putExtra("method", method);
-
-
-
         setResult(RESULT_OK, intent);
         this.finish();
-
     }
 
     /**
      * Send a DELETE request of media via JSON.
      * A JSON response containing same media is returned
      * method value is set to APISettings.URI.DELETE
+     *
      * @param view
      */
     public void deleteMedia(View view) {
@@ -137,20 +151,9 @@ public class WebViewMedia extends Activity {
             System.out.println("Deleted : " + response);
             JSONObject jsonObject = new JSONObject(response);
             intentMedia = new Intent();
-            intentMedia.putExtra("id", jsonObject.getInt("id"));
-            intentMedia.putExtra("url", jsonObject.getString("url"));
-            intentMedia.putExtra("sender", jsonObject.getString("sender"));
-            intentMedia.putExtra("genre", jsonObject.getString("genre"));
-            intentMedia.putExtra("author", jsonObject.getString("author"));
-            intentMedia.putExtra("title", jsonObject.getString("title"));
-
+            Utils.fillIntentFormJSON(intentMedia, jsonObject);
             method = APISettings.getMethodName(APISettings.URI.DELETE);
             intentMedia.putExtra("method", method);
-            Integer viewedInt = jsonObject.getInt("isViewed");
-
-
-            intentMedia.putExtra("isViewed", (viewedInt == 0) ? Boolean.FALSE : Boolean.TRUE);
-
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -160,40 +163,26 @@ public class WebViewMedia extends Activity {
             e.printStackTrace();
         }
 
-
         Toast.makeText(this, R.string.toastConfirmSuppression, Toast.LENGTH_SHORT).show();
         this.setResult(RESULT_OK, intentMedia);
-
         this.finish();
-
-
     }
 
     /**
      * Call FormActivity for edition with media data in intent
      * A boolean is also sent to set FormActivity to edition mode (i.e. pre-filled fields, appropriate button...)
      * A result is awaited, got through onActivityResult event
+     *
      * @param view
      */
 
     public void editMedia(View view) {
 
-
         Intent intent = new Intent(this, FormActivity.class);
-
         intent.putExtra("edition", true);
-        intent.putExtra("id", media.getId());
-        intent.putExtra("url", media.getUrl());
-        intent.putExtra("sender", media.getSender());
-        intent.putExtra("genre", media.getGenre());
-        intent.putExtra("author", media.getAuthor());
-        intent.putExtra("title", media.getTitle());
-        intent.putExtra("isViewed", media.isViewed());
-
+        Utils.fillIntentFromMedia(intent, media);
         startActivityForResult(intent, 0);
         //this.finish();
-
-
     }
 
     @Override
@@ -201,20 +190,9 @@ public class WebViewMedia extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 0) {
-
-
             if (resultCode == Activity.RESULT_OK) {
-
-                media.setId(data.getExtras().getInt("id"));
-                media.setTitle(data.getExtras().getString("title"));
-                media.setUrl(data.getExtras().getString("url"));
-                media.setAuthor(data.getExtras().getString("author"));
-                media.setGenre(data.getExtras().getString("genre"));
-                media.setSender(data.getExtras().getString("sender"));
-                media.setViewed(data.getExtras().getBoolean("isViewed"));
-
+                Utils.setMediaWithIntent(data, media);
                 webViewTitle = (TextView) findViewById(R.id.webViewTitle);
-
                 webViewTitle.setText(media.getAuthor() + " - " + media.getTitle());
                 method = APISettings.getMethodName(APISettings.URI.UPDATE);
                 System.out.println("RECIEVED TITLE = " + media.getTitle());

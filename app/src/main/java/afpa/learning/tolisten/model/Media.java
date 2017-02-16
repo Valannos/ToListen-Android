@@ -2,6 +2,8 @@ package afpa.learning.tolisten.model;
 
 import android.os.Bundle;
 
+import org.json.JSONObject;
+
 /**
  * Created by Afpa on 08/02/2017.
  */
@@ -11,6 +13,8 @@ public class Media {
     private int id;
     private String title, url, author, genre, sender;
     private boolean isViewed;
+
+
 
     public Media(int id, String title, String url, String author, String genre, String sender, boolean isViewed) {
         this.id = id;

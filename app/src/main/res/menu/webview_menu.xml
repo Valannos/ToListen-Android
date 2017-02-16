@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group >
+        <item android:title="@string/itm_edit"
+            android:id="@+id/itmEdit"
+            android:enabled="true"
+            android:visible="true" />
+        <item android:title="@string/itm_delete"
+            android:id="@+id/itmDelete"
+            android:enabled="true"
+            android:visible="true" />
+        <item android:title="@string/itm_return"
+            android:id="@+id/itmBack"
+            android:enabled="true"
+            android:visible="true" />
+    </group>
+</menu>

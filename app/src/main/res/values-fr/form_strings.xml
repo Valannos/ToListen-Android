@@ -20,6 +20,9 @@
     <string name="editFormBtn">Valider</string>
     <string name="toastEditOK">Media modifié</string>
     <string name="backWebView">Retour</string>
+    <string name="itm_edit">Modifier...</string>
+    <string name="itm_delete">Supprimer</string>
+    <string name="itm_return">Retour</string>
 
 
 </resources>

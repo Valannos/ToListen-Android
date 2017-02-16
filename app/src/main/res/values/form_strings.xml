@@ -20,5 +20,8 @@
     <string name="editFormBtn">Confirm</string>
     <string name="toastEditOK">Media edited</string>
     <string name="backWebView">Back</string>
+    <string name="itm_edit">Edit...</string>
+    <string name="itm_delete">Delete</string>
+    <string name="itm_return">Back</string>
     
 </resources>

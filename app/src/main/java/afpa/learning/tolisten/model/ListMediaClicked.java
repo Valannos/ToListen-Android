@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import afpa.learning.tolisten.ListActivity;
+import afpa.learning.tolisten.Utils;
 import afpa.learning.tolisten.WebViewMedia;
 
 
@@ -21,16 +22,9 @@ public class ListMediaClicked implements AdapterView.OnItemClickListener {
         System.out.println("Click Performed on: " + media.getTitle());
 
         Intent intent = new Intent(parent.getContext(), WebViewMedia.class);
-        intent.putExtra("title", media.getTitle());
-        intent.putExtra("genre", media.getGenre());
-        intent.putExtra("author", media.getAuthor());
-        intent.putExtra("user", media.getSender());
-        intent.putExtra("url", media.getUrl());
-        intent.putExtra("id", media.getId());
-
-        intent.putExtra("isViewed", media.isViewed());
+        Utils.fillIntentFromMedia(intent, media);
 
 
-        ((ListActivity)parent.getContext()).startActivityForResult(intent, 0);
+        ((ListActivity) parent.getContext()).startActivityForResult(intent, 0);
     }
 }
