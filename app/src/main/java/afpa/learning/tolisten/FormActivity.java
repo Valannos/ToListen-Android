@@ -83,7 +83,7 @@ public class FormActivity extends ListMenu {
      *
      * @param view
      */
-    private void sendForm(View view) throws JSONException {
+    public void sendForm(View view) throws JSONException {
 
         inputTitle = (EditText) findViewById(R.id.inputTitle);
         inputGenre = (EditText) findViewById(R.id.inputGenre);

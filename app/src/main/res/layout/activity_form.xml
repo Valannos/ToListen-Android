@@ -77,12 +77,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="0dp"
-        android:onClick="sendForm"
+
         android:text="@string/btnValid"
         android:layout_marginTop="48dp"
         android:layout_below="@+id/inputSender"
         android:layout_alignRight="@+id/inputSender"
-        android:layout_alignEnd="@+id/inputSender" />
+        android:layout_alignEnd="@+id/inputSender"
+        android:onClick="sendForm"/>
 
     <Button
         android:id="@+id/btnQuit"
