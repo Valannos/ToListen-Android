@@ -122,13 +122,22 @@ public class ListActivity extends ListMenu {
         if (resultCode != RESULT_OK) {
             return;
         }
-        Media m = new Media(data.getExtras());
-        adpMedia.Add(m);
-        if (!adpGenre.contains(m.getGenre())) {
-            adpGenre.add(m.getGenre());
-            adpGenre.notifyDataSetChanged();
+        Bundle e = data.getExtras();
+        String type = e.getString("method");
+        Media m = new Media(e);
+        if (m != null) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, m.toString());
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, APISettings.getMethodName(APISettings.URI.POST));
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, type);
+            if (type.equals(APISettings.getMethodName(APISettings.URI.POST))) {
+                adpMedia.Add(m);
+                if (!adpGenre.contains(m.getGenre())) {
+                    adpGenre.add(m.getGenre());
+                    adpGenre.notifyDataSetChanged();
+                }
+                adpMedia.notifyDataSetChanged();
+            }
         }
-        adpMedia.notifyDataSetChanged();
         Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "TRIGGERED");
     }
 

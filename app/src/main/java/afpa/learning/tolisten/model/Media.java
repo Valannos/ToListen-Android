@@ -9,21 +9,21 @@ import android.os.Bundle;
 public class Media {
 
     private int id;
-    private String title, url, author, genre, user;
+    private String title, url, author, genre, sender;
     private boolean isViewed;
 
-    public Media(int id, String title, String url, String author, String genre, String user, boolean isViewed) {
+    public Media(int id, String title, String url, String author, String genre, String sender, boolean isViewed) {
         this.id = id;
         this.title = title;
         this.url = url;
         this.author = author;
         this.genre = genre;
-        this.user = user;
+        this.sender = sender;
         this.isViewed = isViewed;
     }
 
-    public Media(String title, String url, String author, String genre, String user) {
-        this.user = user;
+    public Media(String title, String url, String author, String genre, String sender) {
+        this.sender = sender;
         this.url = url;
         this.author = author;
         this.genre = genre;
@@ -37,7 +37,7 @@ public class Media {
         this.url = extras.getString("url");
         this.author = extras.getString("author");
         this.genre = extras.getString("genre");
-        this.user = extras.getString("user");
+        this.sender = extras.getString("sender");
         this.isViewed = extras.getBoolean("isViewed");
     }
 
@@ -85,12 +85,12 @@ public class Media {
         this.genre = genre;
     }
 
-    public String getUser() {
-        return user;
+    public String getSender() {
+        return sender;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setSender(String user) {
+        this.sender = user;
     }
 
     public boolean isViewed() {
@@ -99,5 +99,18 @@ public class Media {
 
     public void setViewed(boolean viewed) {
         isViewed = viewed;
+    }
+
+    @Override
+    public String toString() {
+        return "Media{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                ", author='" + author + '\'' +
+                ", genre='" + genre + '\'' +
+                ", sender='" + sender + '\'' +
+                ", isViewed=" + isViewed +
+                '}';
     }
 }
