@@ -142,10 +142,34 @@ public class ListActivity extends ListMenu {
                 adpMedia.Add(m);
                 if (!adpGenre.contains(m.getGenre())) {
                     adpGenre.add(m.getGenre());
-                    adpGenre.notifyDataSetChanged();
                 }
-                adpMedia.notifyDataSetChanged();
             }
+            if (type.equals(APISettings.getMethodName(APISettings.URI.UPDATE))) {
+                String oldGenre = "";
+                for (Media media : adpMedia.getMedias()) {
+                    if (media.equals(m)) {
+                        oldGenre = media.getGenre();
+                        break;
+                    }
+                }
+                adpGenre.remove(oldGenre);
+                adpGenre.add(m.getGenre());
+                adpMedia.Remove(m);
+                adpMedia.Add(m);
+            }
+            if (type.equals(APISettings.getMethodName(APISettings.URI.DELETE))) {
+                adpMedia.Remove(m);
+                adpGenre.remove(m.getGenre());
+                for (Media media : adpMedia.getMedias()) {
+                    if (!media.equals(m) && media.getGenre().equals(m.getGenre())) {
+                        adpGenre.add(m.getGenre());
+                        break;
+                    }
+                }
+            }
+            adpGenre.notifyDataSetChanged();
+            adpMedia.notifyDataSetChanged();
+            adpMedia.getFilter().filter(txtSearch.getText());
         }
         Logger.getLogger(FormActivity.class.getName()).log(Level.INFO, "TRIGGERED");
     }

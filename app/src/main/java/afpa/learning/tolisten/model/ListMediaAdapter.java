@@ -122,6 +122,23 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
         return medias;
     }
 
+    public void Remove(Media m) {
+        m = GetById(m.getId());
+        if (m != null) {
+            this.remove(m);
+            this.medias.remove(m);
+        }
+    }
+
+    private Media GetById(int id) {
+        for (Media media: medias) {
+            if (id == media.getId()) {
+                return media;
+            }
+        }
+        return null;
+    }
+
     public void Add(Media m) {
         this.add(m);
         this.medias.add(m);
