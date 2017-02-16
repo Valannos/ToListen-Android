@@ -101,7 +101,7 @@ public class WebViewMedia extends Activity {
         intent.putExtra("edition", true);
         intent.putExtra("id", media.getId());
         intent.putExtra("url", media.getUrl());
-        intent.putExtra("sender", media.getUser());
+        intent.putExtra("sender", media.getSender());
         intent.putExtra("genre", media.getGenre());
         intent.putExtra("author", media.getAuthor());
         intent.putExtra("title", media.getTitle());
@@ -167,7 +167,7 @@ public class WebViewMedia extends Activity {
         intent.putExtra("edition", true);
         intent.putExtra("id", media.getId());
         intent.putExtra("url", media.getUrl());
-        intent.putExtra("sender", media.getUser());
+        intent.putExtra("sender", media.getSender());
         intent.putExtra("genre", media.getGenre());
         intent.putExtra("author", media.getAuthor());
         intent.putExtra("title", media.getTitle());
@@ -193,7 +193,7 @@ public class WebViewMedia extends Activity {
                 media.setUrl(data.getExtras().getString("url"));
                 media.setAuthor(data.getExtras().getString("author"));
                 media.setGenre(data.getExtras().getString("genre"));
-                media.setUser(data.getExtras().getString("sender"));
+                media.setSender(data.getExtras().getString("sender"));
                 media.setViewed(data.getExtras().getBoolean("isViewed"));
 
                 webViewTitle = (TextView) findViewById(R.id.webViewTitle);

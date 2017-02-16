@@ -41,8 +41,8 @@ public class MediaFormHandler extends AsyncTask<JSONObject, Void, String> {
             URL url = new URL(APISettings.getURI(APISettings.URI.POST));
             connection = (HttpURLConnection) url.openConnection();
 
-            connection.setReadTimeout(3000);
-            connection.setConnectTimeout(3000);
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(10000);
             connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setRequestMethod("POST");

@@ -44,8 +44,8 @@ public class MediaProvider extends AsyncTask<String, Void, ArrayList<Media>> {
             URL url = new URL(APISettings.getURI(APISettings.URI.GET_ALL));
             System.out.println(url);
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(3000);
-            urlConnection.setConnectTimeout(3000);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(10000);
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.connect();

@@ -69,7 +69,7 @@ public class FormActivity extends ListMenu {
             inputTitle.setText(editedMedia.getTitle());
             inputGenre.setText(editedMedia.getGenre());
             inputAuthor.setText(editedMedia.getAuthor());
-            inputSender.setText(editedMedia.getUser());
+            inputSender.setText(editedMedia.getSender());
             inputURL.setText(editedMedia.getUrl());
 
 
@@ -96,14 +96,14 @@ public class FormActivity extends ListMenu {
 
         Media media = new Media(inputTitle.getText().toString(), inputURL.getText().toString(), inputAuthor.getText().toString(), inputGenre.getText().toString(), inputSender.getText().toString());
 
-        if (!media.getAuthor().equals("") && !media.getGenre().equals("") && !media.getTitle().equals("") && !media.getUrl().equals("") && !media.getUser().equals("")) {
+        if (!media.getAuthor().equals("") && !media.getGenre().equals("") && !media.getTitle().equals("") && !media.getUrl().equals("") && !media.getSender().equals("")) {
 
             JSONObject json = new JSONObject();
             try {
                 json.put("title", media.getTitle());
                 json.put("url", media.getUrl());
                 json.put("genre", media.getGenre());
-                json.put("sender", media.getUser());
+                json.put("sender", media.getSender());
                 json.put("author", media.getAuthor());
 
             } catch (JSONException e) {
@@ -146,6 +146,8 @@ public class FormActivity extends ListMenu {
 
             }
 
+            returnIntent.putExtra("method", APISettings.getMethodName(APISettings.URI.POST));
+
             this.setResult(RESULT_OK, returnIntent);
             this.finish();
 
@@ -179,7 +181,7 @@ public class FormActivity extends ListMenu {
 
         Media media = new Media(inputTitle.getText().toString(), inputURL.getText().toString(), inputAuthor.getText().toString(), inputGenre.getText().toString(), inputSender.getText().toString());
         media.setId(editedMedia.getId());
-        if (!media.getAuthor().equals("") && !media.getGenre().equals("") && !media.getTitle().equals("") && !media.getUrl().equals("") && !media.getUser().equals("")) {
+        if (!media.getAuthor().equals("") && !media.getGenre().equals("") && !media.getTitle().equals("") && !media.getUrl().equals("") && !media.getSender().equals("")) {
 
             JSONObject json = new JSONObject();
             try {
@@ -187,7 +189,7 @@ public class FormActivity extends ListMenu {
                 json.put("title", media.getTitle());
                 json.put("url", media.getUrl());
                 json.put("genre", media.getGenre());
-                json.put("sender", media.getUser());
+                json.put("sender", media.getSender());
                 json.put("author", media.getAuthor());
 
             } catch (JSONException e) {
@@ -215,12 +217,10 @@ public class FormActivity extends ListMenu {
                 returnIntent.putExtra("genre", jsonObject.getString("genre"));
                 returnIntent.putExtra("author", jsonObject.getString("author"));
                 returnIntent.putExtra("title", jsonObject.getString("title"));
-
                 Integer viewedInt = jsonObject.getInt("isViewed");
 
                 returnIntent.putExtra("isViewed", viewedInt != 0 ? true : false);
                 Logger.getLogger(FormActivity.class.getName()).log(Level.SEVERE, json.toString());
-
 
                 this.setResult(RESULT_OK, returnIntent);
                 this.finish();
