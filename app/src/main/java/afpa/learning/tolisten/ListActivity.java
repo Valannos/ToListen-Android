@@ -67,6 +67,10 @@ public class ListActivity extends ListMenu {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.itmUpdate) {
             initMedias();
+            initGenre(adpMedia.getMedias());
+            adpGenre.notifyDataSetChanged();
+            adpMedia.notifyDataSetChanged();
+            adpMedia.getFilter().filter(txtSearch.getText());
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -135,9 +139,6 @@ public class ListActivity extends ListMenu {
         String type = e.getString("method");
         Media m = new Media(e);
         if (m != null) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, m.toString());
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, APISettings.getMethodName(APISettings.URI.POST));
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, type);
             if (type.equals(APISettings.getMethodName(APISettings.URI.POST))) {
                 adpMedia.Add(m);
                 if (!adpGenre.contains(m.getGenre())) {
