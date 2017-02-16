@@ -188,16 +188,13 @@ public class WebViewMedia extends Activity {
 
             if (resultCode == Activity.RESULT_OK) {
 
-
-                Intent intent = getIntent();
-
-                media.setId(intent.getExtras().getInt("id"));
-                media.setTitle(intent.getExtras().getString("title"));
-                media.setUrl(intent.getExtras().getString("url"));
-                media.setAuthor(intent.getExtras().getString("author"));
-                media.setGenre(intent.getExtras().getString("genre"));
-                media.setUser(intent.getExtras().getString("sender"));
-                media.setViewed(intent.getExtras().getBoolean("isViewed"));
+                media.setId(data.getExtras().getInt("id"));
+                media.setTitle(data.getExtras().getString("title"));
+                media.setUrl(data.getExtras().getString("url"));
+                media.setAuthor(data.getExtras().getString("author"));
+                media.setGenre(data.getExtras().getString("genre"));
+                media.setUser(data.getExtras().getString("sender"));
+                media.setViewed(data.getExtras().getBoolean("isViewed"));
 
                 webViewTitle = (TextView) findViewById(R.id.webViewTitle);
 
