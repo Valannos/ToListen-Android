@@ -114,6 +114,8 @@ public class WebViewMedia extends Activity {
         if (this.method.equals("")) this.method = APISettings.getMethodName(APISettings.URI.UPDATE);
         intent.putExtra("method", method);
 
+
+
         setResult(RESULT_OK, intent);
         this.finish();
 
