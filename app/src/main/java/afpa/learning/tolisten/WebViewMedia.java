@@ -32,7 +32,7 @@ public class WebViewMedia extends Activity {
     private Media media;
     private TextView webViewTitle;
 
-    String method;
+    String method = "";
 
 
     @Override
@@ -94,6 +94,11 @@ public class WebViewMedia extends Activity {
 
     }
 
+    /**
+     * Return media object through intent to ListActivity
+     * If no DELETE nor PUT request has been sent, "method" value is set to APISettings.URI.UPDATE
+     * @param view
+     */
     public void exitWebView(View view) {
 
         Intent intent = new Intent();
@@ -106,6 +111,7 @@ public class WebViewMedia extends Activity {
         intent.putExtra("author", media.getAuthor());
         intent.putExtra("title", media.getTitle());
         intent.putExtra("isViewed", media.isViewed());
+        if (this.method.equals("")) this.method = APISettings.getMethodName(APISettings.URI.UPDATE);
         intent.putExtra("method", method);
 
         setResult(RESULT_OK, intent);
@@ -113,6 +119,12 @@ public class WebViewMedia extends Activity {
 
     }
 
+    /**
+     * Send a DELETE request of media via JSON.
+     * A JSON response containing same media is returned
+     * method value is set to APISettings.URI.DELETE
+     * @param view
+     */
     public void deleteMedia(View view) {
 
         Intent intentMedia = null;
@@ -134,12 +146,8 @@ public class WebViewMedia extends Activity {
             intentMedia.putExtra("method", method);
             Integer viewedInt = jsonObject.getInt("isViewed");
 
-            if (viewedInt == 0) {
-                intentMedia.putExtra("isViewed", Boolean.FALSE);
-            } else {
-                intentMedia.putExtra("isViewed", Boolean.TRUE);
 
-            }
+            intentMedia.putExtra("isViewed", (viewedInt == 0) ? Boolean.FALSE : Boolean.TRUE);
 
 
         } catch (InterruptedException e) {
@@ -158,6 +166,13 @@ public class WebViewMedia extends Activity {
 
 
     }
+
+    /**
+     * Call FormActivity for edition with media data in intent
+     * A boolean is also sent to set FormActivity to edition mode (i.e. pre-filled fields, appropriate button...)
+     * A result is awaited, got through onActivityResult event
+     * @param view
+     */
 
     public void editMedia(View view) {
 
@@ -201,6 +216,7 @@ public class WebViewMedia extends Activity {
                 webViewTitle.setText(media.getAuthor() + " - " + media.getTitle());
                 method = APISettings.getMethodName(APISettings.URI.UPDATE);
                 System.out.println("RECIEVED TITLE = " + media.getTitle());
+
 
             }
         }
