@@ -76,6 +76,12 @@ public class ListActivity extends ListMenu {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Utils.deleteCache(this);
+    }
+
     // Initialize genre
     private void initGenre(List<Media> medias) {
         spnGenre = (Spinner) findViewById(R.id.spnGenre);
