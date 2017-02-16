@@ -51,15 +51,13 @@ public class MediaProvider extends AsyncTask<String, Void, ArrayList<Media>> {
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.connect();
 
-
+            sb = new StringBuilder();
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 System.out.println("Connection established, retrieving data");
                 InputStream inst = new BufferedInputStream(urlConnection.getInputStream());
                 BufferedReader br = new BufferedReader(new InputStreamReader(inst));
 
 
-
-                sb = new StringBuilder();
                 while ((line = br.readLine()) != null) {
 
                     sb.append(line);
@@ -69,7 +67,7 @@ public class MediaProvider extends AsyncTask<String, Void, ArrayList<Media>> {
 
             } else {
 
-            System.out.println("Error connecting server");
+                System.out.println("Error connecting server");
 
             }
             urlConnection.disconnect();
