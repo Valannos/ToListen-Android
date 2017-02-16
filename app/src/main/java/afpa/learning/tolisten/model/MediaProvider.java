@@ -35,8 +35,9 @@ public class MediaProvider extends AsyncTask<String, Void, ArrayList<Media>> {
 
         ArrayList<Media> medias = null;
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = null;
         HttpURLConnection urlConnection;
+        String line;
 
 
         try {
@@ -57,7 +58,8 @@ public class MediaProvider extends AsyncTask<String, Void, ArrayList<Media>> {
                 BufferedReader br = new BufferedReader(new InputStreamReader(inst));
 
 
-                String line;
+
+                sb = new StringBuilder();
                 while ((line = br.readLine()) != null) {
 
                     sb.append(line);
