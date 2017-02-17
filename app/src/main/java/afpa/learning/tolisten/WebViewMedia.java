@@ -32,7 +32,7 @@ import afpa.learning.tolisten.model.MediaSwitchViewState;
 public class WebViewMedia extends AppCompatActivity {
 
     private Switch switchView;
-
+    WebView browser;
     private Media media;
     private TextView webViewTitle;
 
@@ -82,7 +82,7 @@ public class WebViewMedia extends AppCompatActivity {
         media = new Media(getIntent().getExtras());
         System.out.println(media.toString());
 
-        WebView browser = (WebView) findViewById(R.id.webViewMedia);
+        browser = (WebView) findViewById(R.id.webViewMedia);
         WebSettings webSettings = browser.getSettings();
         browser.setWebViewClient(new WebViewClient());
         webSettings.setJavaScriptEnabled(true);
@@ -196,6 +196,7 @@ public class WebViewMedia extends AppCompatActivity {
                 webViewTitle.setText(media.getAuthor() + " - " + media.getTitle());
                 method = APISettings.getMethodName(APISettings.URI.UPDATE);
                 System.out.println("RECIEVED TITLE = " + media.getTitle());
+                browser.loadUrl(media.getUrl());
 
 
             }
