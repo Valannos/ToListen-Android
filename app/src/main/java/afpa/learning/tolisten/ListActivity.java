@@ -146,33 +146,42 @@ public class ListActivity extends ListMenu {
         Media m = new Media(e);
         if (m != null) {
             if (type.equals(APISettings.getMethodName(APISettings.URI.POST))) {
+                System.out.println("Add media");
                 adpMedia.Add(m);
-                if (!adpGenre.contains(m.getGenre())) {
-                    adpGenre.add(m.getGenre());
-                }
+                adpGenre.Add(m.getGenre());
+                System.out.println("New media: " + m);
             }
             if (type.equals(APISettings.getMethodName(APISettings.URI.UPDATE))) {
-                String oldGenre = "";
-                for (Media media : adpMedia.getMedias()) {
-                    if (media.equals(m)) {
-                        oldGenre = media.getGenre();
-                        break;
-                    }
+                System.out.println("Update media");
+                Media media = adpMedia.getById(m.getId());
+                System.out.println("Old media: " + media);
+                String oldGenre = media.getGenre();
+                media.setAuthor(m.getAuthor());
+                media.setGenre(m.getGenre());
+                media.setSender(m.getSender());
+                media.setTitle(m.getTitle());
+                media.setUrl(m.getUrl());
+                media.setViewed(m.isViewed());
+                if (adpMedia.countGenre(oldGenre) == 0) {
+                    adpGenre.remove(oldGenre);
                 }
-                adpGenre.remove(oldGenre);
-                adpGenre.add(m.getGenre());
-                adpMedia.Remove(m);
-                adpMedia.Add(m);
+                adpGenre.Add(m.getGenre());
+                System.out.println("New media: " + media);
             }
             if (type.equals(APISettings.getMethodName(APISettings.URI.DELETE))) {
+                System.out.println("Delete media");
                 adpMedia.Remove(m);
-                adpGenre.remove(m.getGenre());
+                boolean delete = true;
                 for (Media media : adpMedia.getMedias()) {
                     if (!media.equals(m) && media.getGenre().equals(m.getGenre())) {
-                        adpGenre.add(m.getGenre());
+                        delete = false;
                         break;
                     }
                 }
+                if (delete) {
+                    adpGenre.remove(m.getGenre());
+                }
+                System.out.println("Old media: " + m);
             }
             adpGenre.notifyDataSetChanged();
             adpMedia.notifyDataSetChanged();

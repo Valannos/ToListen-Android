@@ -24,4 +24,10 @@ public class GenreAdapter extends ArrayAdapter<String> {
         }
         return false;
     }
+
+    public void Add(String genre) {
+        if (!contains(genre)) {
+            add(genre);
+        }
+    }
 }

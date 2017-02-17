@@ -123,14 +123,14 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
     }
 
     public void Remove(Media m) {
-        m = GetById(m.getId());
+        m = getById(m.getId());
         if (m != null) {
             this.remove(m);
             this.medias.remove(m);
         }
     }
 
-    private Media GetById(int id) {
+    public Media getById(int id) {
         for (Media media: medias) {
             if (id == media.getId()) {
                 return media;
@@ -142,6 +142,16 @@ public class ListMediaAdapter extends ArrayAdapter<Media> implements Filterable 
     public void Add(Media m) {
         this.add(m);
         this.medias.add(m);
+    }
+
+    public int countGenre(String genre) {
+        int i = 0;
+        for (Media media: medias) {
+            if (genre.equals(media.getGenre())) {
+                i++;
+            }
+        }
+        return i;
     }
 
     @Override
